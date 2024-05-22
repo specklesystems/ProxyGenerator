@@ -1,4 +1,4 @@
-using ProxyInterfaceGenerator;
+using Speckle.ProxyGenerator;
 
 namespace ProxyInterfaceConsumer
 {

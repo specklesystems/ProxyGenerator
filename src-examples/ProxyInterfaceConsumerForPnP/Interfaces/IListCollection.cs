@@ -3,7 +3,7 @@
 
 //namespace ProxyInterfaceConsumerForPnP.Interfaces
 //{
-//    [ProxyInterfaceGenerator.Proxy(typeof(Microsoft.SharePoint.Client.ListCollection))]
+//    [Speckle.ProxyGenerator.Proxy(typeof(Microsoft.SharePoint.Client.ListCollection))]
 //    public partial interface IProxyListCollection: IClientObject, IEnumerable, IQueryable
 //    {
 //    }

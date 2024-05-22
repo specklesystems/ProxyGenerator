@@ -90,8 +90,8 @@ public sealed class Clazz
     public string Name { get; set; } = string.Empty;
 }
 
-[ProxyInterfaceGenerator.Proxy(typeof(Test))]
+[Speckle.ProxyGenerator.Proxy(typeof(Test))]
 public partial interface ITest { }
 
-[ProxyInterfaceGenerator.Proxy(typeof(Clazz))]
+[Speckle.ProxyGenerator.Proxy(typeof(Clazz))]
 public partial interface IClazz { }

@@ -4,7 +4,7 @@ using Microsoft.SharePoint.Client;
 
 namespace ProxyInterfaceConsumerForPnP.Interfaces
 {
-    [ProxyInterfaceGenerator.Proxy(typeof(ClientContext))]
+    [Speckle.ProxyGenerator.Proxy(typeof(ClientContext))]
     public partial interface IClientContext : IClientRuntimeContext
     {
         void Load<TSource, TTarget>(
