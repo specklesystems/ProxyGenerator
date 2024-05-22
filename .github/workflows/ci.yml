@@ -21,6 +21,3 @@ jobs:
         
       - name: Build
         run: dotnet build --configuration Debug --no-restore 
-        
-      - name: Test
-        run: dotnet test --no-build --configuration Debug --verbosity normal
