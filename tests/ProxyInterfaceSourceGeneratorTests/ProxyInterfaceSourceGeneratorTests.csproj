@@ -55,9 +55,6 @@
         <Compile Update="Source\IFoo2.cs">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Compile>
-    </ItemGroup>
-
-    <ItemGroup>
         <Compile Update="Source\Disposable\*.cs">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Compile>
