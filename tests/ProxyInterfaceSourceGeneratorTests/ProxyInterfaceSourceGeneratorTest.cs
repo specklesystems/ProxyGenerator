@@ -36,7 +36,7 @@ public class ProxyInterfaceSourceGeneratorTest
             Text = File.ReadAllText(path),
             AttributeToAddToInterface = new ExtraAttribute
             {
-                Name = "ProxyInterfaceGenerator.Proxy",
+                Name = "Speckle.ProxyGenerator.Proxy",
                 ArgumentList = "typeof(ProxyInterfaceSourceGeneratorTests.Source.MyStruct)"
             }
         };
@@ -66,7 +66,7 @@ public class ProxyInterfaceSourceGeneratorTest
             Text = File.ReadAllText(path),
             AttributeToAddToInterface = new ExtraAttribute
             {
-                Name = "ProxyInterfaceGenerator.Proxy",
+                Name = "Speckle.ProxyGenerator.Proxy",
                 ArgumentList = "typeof(ProxyInterfaceSourceGeneratorTests.Source.Foo)"
             }
         };
@@ -100,7 +100,7 @@ public class ProxyInterfaceSourceGeneratorTest
             Text = File.ReadAllText(path),
             AttributeToAddToInterface = new ExtraAttribute
             {
-                Name = "ProxyInterfaceGenerator.Proxy",
+                Name = "Speckle.ProxyGenerator.Proxy",
                 ArgumentList = new[]
                 {
                     "typeof(ProxyInterfaceSourceGeneratorTests.Source.Foo2)",
@@ -140,7 +140,7 @@ public class ProxyInterfaceSourceGeneratorTest
             Text = File.ReadAllText(path),
             AttributeToAddToInterface = new ExtraAttribute
             {
-                Name = "ProxyInterfaceGenerator.Proxy",
+                Name = "Speckle.ProxyGenerator.Proxy",
                 ArgumentList = "typeof(ProxyInterfaceSourceGeneratorTests.Source.Generic<>)"
             }
         };
@@ -180,7 +180,7 @@ public class ProxyInterfaceSourceGeneratorTest
             Text = File.ReadAllText(path),
             AttributeToAddToInterface = new ExtraAttribute
             {
-                Name = "ProxyInterfaceGenerator.Proxy",
+                Name = "Speckle.ProxyGenerator.Proxy",
                 ArgumentList = "typeof(ProxyInterfaceSourceGeneratorTests.Source.ÜberGeneric<>)"
             }
         };
@@ -220,7 +220,7 @@ public class ProxyInterfaceSourceGeneratorTest
             Text = File.ReadAllText(path),
             AttributeToAddToInterface = new ExtraAttribute
             {
-                Name = "ProxyInterfaceGenerator.Proxy",
+                Name = "Speckle.ProxyGenerator.Proxy",
                 ArgumentList = "typeof(ProxyInterfaceSourceGeneratorTests.Source.OperatorTest)"
             }
         };
@@ -268,7 +268,7 @@ public class ProxyInterfaceSourceGeneratorTest
             Text = File.ReadAllText(path),
             AttributeToAddToInterface = new ExtraAttribute
             {
-                Name = "ProxyInterfaceGenerator.Proxy",
+                Name = "Speckle.ProxyGenerator.Proxy",
                 ArgumentList = "typeof(ProxyInterfaceSourceGeneratorTests.Source.NoNamespace)"
             }
         };
@@ -308,7 +308,7 @@ public class ProxyInterfaceSourceGeneratorTest
             Text = File.ReadAllText(path),
             AttributeToAddToInterface = new ExtraAttribute
             {
-                Name = "ProxyInterfaceGenerator.Proxy",
+                Name = "Speckle.ProxyGenerator.Proxy",
                 ArgumentList = "typeof(ProxyInterfaceSourceGeneratorTests.Source.MixedVisibility)"
             }
         };
@@ -335,7 +335,7 @@ public class ProxyInterfaceSourceGeneratorTest
     public void GenerateFiles_ForSingleClass_Should_GenerateCorrectFiles()
     {
         // Arrange
-        var attributeFilename = "ProxyInterfaceGenerator.Extra.g.cs";
+        var attributeFilename = "Speckle.ProxyGenerator.Extra.g.cs";
         var interfaceFilename = "ProxyInterfaceSourceGeneratorTests.Source.IPersonExtends.g.cs";
         var proxyClassFilename =
             "ProxyInterfaceSourceGeneratorTests.Source.PersonExtendsProxy.g.cs";
@@ -347,7 +347,7 @@ public class ProxyInterfaceSourceGeneratorTest
             Text = File.ReadAllText(path),
             AttributeToAddToInterface = new ExtraAttribute
             {
-                Name = "ProxyInterfaceGenerator.Proxy",
+                Name = "Speckle.ProxyGenerator.Proxy",
                 ArgumentList = new[]
                 {
                     "typeof(ProxyInterfaceSourceGeneratorTests.Source.PersonExtends)",
@@ -407,7 +407,7 @@ public class ProxyInterfaceSourceGeneratorTest
             Text = File.ReadAllText(path),
             AttributeToAddToInterface = new ExtraAttribute
             {
-                Name = "ProxyInterfaceGenerator.Proxy",
+                Name = "Speckle.ProxyGenerator.Proxy",
                 ArgumentList = new[]
                 {
                     "typeof(ProxyInterfaceSourceGeneratorTests.Source.TestClassInternal)",
@@ -452,7 +452,7 @@ public class ProxyInterfaceSourceGeneratorTest
     public void GenerateFiles_ForTwoClasses_Should_GenerateCorrectFiles()
     {
         // Arrange
-        var attributeFilename = "ProxyInterfaceGenerator.Extra.g.cs";
+        var attributeFilename = "Speckle.ProxyGenerator.Extra.g.cs";
         var interfaceHumanFilename = "ProxyInterfaceSourceGeneratorTests.Source.IHuman.g.cs";
         var proxyClassHumanFilename = "ProxyInterfaceSourceGeneratorTests.Source.HumanProxy.g.cs";
         var interfacePersonFilename = "ProxyInterfaceSourceGeneratorTests.Source.IPerson.g.cs";
@@ -465,7 +465,7 @@ public class ProxyInterfaceSourceGeneratorTest
             Text = File.ReadAllText(pathPerson),
             AttributeToAddToInterface = new ExtraAttribute
             {
-                Name = "ProxyInterfaceGenerator.Proxy",
+                Name = "Speckle.ProxyGenerator.Proxy",
                 ArgumentList = "typeof(ProxyInterfaceSourceGeneratorTests.Source.Person)"
             }
         };
@@ -477,7 +477,7 @@ public class ProxyInterfaceSourceGeneratorTest
             Text = File.ReadAllText(pathHuman),
             AttributeToAddToInterface = new ExtraAttribute
             {
-                Name = "ProxyInterfaceGenerator.Proxy",
+                Name = "Speckle.ProxyGenerator.Proxy",
                 ArgumentList = "typeof(ProxyInterfaceSourceGeneratorTests.Source.Human)"
             }
         };
@@ -556,7 +556,7 @@ public class ProxyInterfaceSourceGeneratorTest
     public void GenerateFiles_HttpClient()
     {
         // Arrange
-        var attributeFilename = "ProxyInterfaceGenerator.Extra.g.cs";
+        var attributeFilename = "Speckle.ProxyGenerator.Extra.g.cs";
         var interfaceIHttpClientFilename =
             "ProxyInterfaceSourceGeneratorTests.Source.IHttpClient.g.cs";
         var proxyClassIHttpClientFilename = "System.Net.Http.HttpClientProxy.g.cs";
@@ -571,7 +571,7 @@ public class ProxyInterfaceSourceGeneratorTest
             Text = File.ReadAllText(pathIHttpClient),
             AttributeToAddToInterface = new ExtraAttribute
             {
-                Name = "ProxyInterfaceGenerator.Proxy",
+                Name = "Speckle.ProxyGenerator.Proxy",
                 ArgumentList = "typeof(System.Net.Http.HttpClient)"
             }
         };
@@ -583,7 +583,7 @@ public class ProxyInterfaceSourceGeneratorTest
             Text = File.ReadAllText(pathIHttpMessageInvoker),
             AttributeToAddToInterface = new ExtraAttribute
             {
-                Name = "ProxyInterfaceGenerator.Proxy",
+                Name = "Speckle.ProxyGenerator.Proxy",
                 ArgumentList = "typeof(System.Net.Http.HttpMessageInvoker)"
             }
         };
@@ -671,7 +671,7 @@ public class ProxyInterfaceSourceGeneratorTest
         const string @class = "ClassInNamespace";
         foreach (var x in new[] { 1, 2 })
         {
-            var attributeFilename = "ProxyInterfaceGenerator.Extra.g.cs";
+            var attributeFilename = "Speckle.ProxyGenerator.Extra.g.cs";
             var interfaceFilename =
                 $"ProxyInterfaceSourceGeneratorTests.Namespace{x}.I{@class}.g.cs";
             var proxyClassFilename =
@@ -684,7 +684,7 @@ public class ProxyInterfaceSourceGeneratorTest
                 Text = File.ReadAllText(path),
                 AttributeToAddToInterface = new ExtraAttribute
                 {
-                    Name = "ProxyInterfaceGenerator.Proxy",
+                    Name = "Speckle.ProxyGenerator.Proxy",
                     ArgumentList = new[]
                     {
                         $"typeof(ProxyInterfaceSourceGeneratorTests.Namespace{x}.{@class})",

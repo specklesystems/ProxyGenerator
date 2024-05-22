@@ -1,5 +1,5 @@
 namespace ProxyInterfaceConsumerForPnP.Interfaces
 {
-    [ProxyInterfaceGenerator.Proxy(typeof(Microsoft.SharePoint.Client.User))]
+    [Speckle.ProxyGenerator.Proxy(typeof(Microsoft.SharePoint.Client.User))]
     public partial interface IUser { }
 }

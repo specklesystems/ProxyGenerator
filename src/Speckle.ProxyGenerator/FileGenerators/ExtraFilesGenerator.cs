@@ -4,7 +4,7 @@ namespace Speckle.ProxyGenerator.FileGenerators;
 
 internal class ExtraFilesGenerator : IFileGenerator
 {
-    private const string Name = "ProxyInterfaceGenerator.Extra.g.cs";
+    private const string Name = "Speckle.ProxyGenerator.Extra.g.cs";
 
     public FileData GenerateFile()
     {
@@ -21,7 +21,7 @@ internal class ExtraFilesGenerator : IFileGenerator
 
 using System;
 
-namespace ProxyInterfaceGenerator
+namespace Speckle.ProxyGenerator
 {{
     [AttributeUsage(AttributeTargets.Interface)]
     internal sealed class ProxyAttribute : Attribute

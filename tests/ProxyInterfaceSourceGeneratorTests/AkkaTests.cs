@@ -34,7 +34,7 @@ public class AkkaTests
             Text = File.ReadAllText(path),
             AttributeToAddToInterface = new ExtraAttribute
             {
-                Name = "ProxyInterfaceGenerator.Proxy",
+                Name = "Speckle.ProxyGenerator.Proxy",
                 ArgumentList = "typeof(Akka.Actor.LocalActorRefProvider)"
             }
         };

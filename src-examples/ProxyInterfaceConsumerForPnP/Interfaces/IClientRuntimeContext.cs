@@ -1,5 +1,5 @@
 namespace ProxyInterfaceConsumerForPnP.Interfaces
 {
-    [ProxyInterfaceGenerator.Proxy(typeof(Microsoft.SharePoint.Client.ClientRuntimeContext))]
+    [Speckle.ProxyGenerator.Proxy(typeof(Microsoft.SharePoint.Client.ClientRuntimeContext))]
     public partial interface IClientRuntimeContext { }
 }

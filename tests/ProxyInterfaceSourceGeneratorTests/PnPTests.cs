@@ -44,7 +44,7 @@ public class PnPTests
             Text = File.ReadAllText(pathClientObject),
             AttributeToAddToInterface = new ExtraAttribute
             {
-                Name = "ProxyInterfaceGenerator.Proxy",
+                Name = "Speckle.ProxyGenerator.Proxy",
                 ArgumentList = "typeof(Microsoft.SharePoint.Client.ClientObject)"
             }
         };
@@ -56,7 +56,7 @@ public class PnPTests
             Text = File.ReadAllText(pathSec),
             AttributeToAddToInterface = new ExtraAttribute
             {
-                Name = "ProxyInterfaceGenerator.Proxy",
+                Name = "Speckle.ProxyGenerator.Proxy",
                 ArgumentList = "typeof(SecurableObject)" // Only name, no namespace
             }
         };
@@ -68,7 +68,7 @@ public class PnPTests
             Text = File.ReadAllText(pathWeb),
             AttributeToAddToInterface = new ExtraAttribute
             {
-                Name = "ProxyInterfaceGenerator.Proxy",
+                Name = "Speckle.ProxyGenerator.Proxy",
                 ArgumentList = "typeof(Web)" // Only name, no namespace
             }
         };
@@ -80,7 +80,7 @@ public class PnPTests
             Text = File.ReadAllText(pathClientRuntimeContext),
             AttributeToAddToInterface = new ExtraAttribute
             {
-                Name = "ProxyInterfaceGenerator.Proxy",
+                Name = "Speckle.ProxyGenerator.Proxy",
                 ArgumentList = "typeof(Microsoft.SharePoint.Client.ClientRuntimeContext)"
             }
         };
@@ -92,7 +92,7 @@ public class PnPTests
             Text = File.ReadAllText(pathClientContext),
             AttributeToAddToInterface = new ExtraAttribute
             {
-                Name = "ProxyInterfaceGenerator.Proxy",
+                Name = "Speckle.ProxyGenerator.Proxy",
                 ArgumentList = "typeof(ClientContext)" // Only name, no namespace
             }
         };

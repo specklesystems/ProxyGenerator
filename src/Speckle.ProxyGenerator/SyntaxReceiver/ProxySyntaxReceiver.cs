@@ -11,7 +11,7 @@ internal class ProxySyntaxReceiver : ISyntaxContextReceiver
     private const string GlobalPrefix = "global::";
     private static readonly string[] GenerateProxyAttributes =
     [
-        "ProxyInterfaceGenerator.Proxy",
+        "Speckle.ProxyGenerator.Proxy",
         "Proxy"
     ];
     private static readonly string[] Modifiers = ["public", "partial"];

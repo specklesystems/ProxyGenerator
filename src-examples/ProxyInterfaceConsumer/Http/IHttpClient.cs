@@ -2,8 +2,8 @@ using System.Net.Http;
 
 namespace ProxyInterfaceConsumer.Http;
 
-[ProxyInterfaceGenerator.Proxy(typeof(HttpClient), true)]
+[Speckle.ProxyGenerator.Proxy(typeof(HttpClient), true)]
 public partial interface IHttpClient : IHttpMessageInvoker { }
 
-[ProxyInterfaceGenerator.Proxy(typeof(HttpMessageInvoker))]
+[Speckle.ProxyGenerator.Proxy(typeof(HttpMessageInvoker))]
 public partial interface IHttpMessageInvoker { }

@@ -6,7 +6,6 @@
         <LangVersion>Latest</LangVersion>
         <Nullable>enable</Nullable>
         <Authors>Speckle</Authors>
-        <Description></Description>
         <RootNamespace>Speckle.ProxyGenerator</RootNamespace>
         <Title>Speckle.ProxyGenerator</Title>
         <PackageId>Speckle.ProxyGenerator</PackageId>

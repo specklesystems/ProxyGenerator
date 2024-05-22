@@ -139,7 +139,7 @@ public class InheritedInterfaceTests
             Text = File.ReadAllText(path),
             AttributeToAddToInterface = new ExtraAttribute
             {
-                Name = "ProxyInterfaceGenerator.Proxy",
+                Name = "Speckle.ProxyGenerator.Proxy",
                 ArgumentList = $"typeof({Namespace}.{name}), {extendString}"
             }
         };
