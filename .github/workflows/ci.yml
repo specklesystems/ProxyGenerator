@@ -4,7 +4,7 @@ on:
   pull_request:
     
 jobs: 
-  deploy:
+  check-build:
     runs-on: ubuntu-latest
       
     steps:
