@@ -48,7 +48,7 @@ class ProxyInterfaceCodeGenerator : ISourceGenerator
             // https://github.com/reactiveui/refit/blob/main/InterfaceStubGenerator.Core/InterfaceStubGenerator.cs
             var supportsNullable = csharpParseOptions.LanguageVersion >= LanguageVersion.CSharp8;
 
-            GenerateProxyAttribute(context, receiver);
+            GenerateProxyAttribute(context, receiver, supportsNullable);
             GeneratePartialInterfaces(context, receiver, supportsNullable);
             GenerateProxyClasses(context, receiver, supportsNullable);
         }
@@ -65,7 +65,11 @@ class ProxyInterfaceCodeGenerator : ISourceGenerator
         context.AddSource("Error.g", SourceText.From(message, Encoding.UTF8));
     }
 
-    private void GenerateProxyAttribute(GeneratorExecutionContext ctx, ProxySyntaxReceiver receiver)
+    private void GenerateProxyAttribute(
+        GeneratorExecutionContext ctx,
+        ProxySyntaxReceiver receiver,
+        bool supportsNullable
+    )
     {
         var context = new Context
         {
@@ -73,7 +77,7 @@ class ProxyInterfaceCodeGenerator : ISourceGenerator
             Candidates = receiver.CandidateInterfaces
         };
 
-        var attributeData = _proxyAttributeGenerator.GenerateFile();
+        var attributeData = _proxyAttributeGenerator.GenerateFile(supportsNullable);
         context.GeneratorExecutionContext.AddSource(
             attributeData.FileName,
             SourceText.From(attributeData.Text, Encoding.UTF8)

@@ -1,3 +1,4 @@
+using Speckle.ProxyGenerator.Extensions;
 using Speckle.ProxyGenerator.Models;
 
 namespace Speckle.ProxyGenerator.FileGenerators;
@@ -6,7 +7,7 @@ internal class ExtraFilesGenerator : IFileGenerator
 {
     private const string Name = "Speckle.ProxyGenerator.Extra.g.cs";
 
-    public FileData GenerateFile()
+    public FileData GenerateFile(bool supportsNullable)
     {
         return new FileData(
             $"{Name}",
@@ -19,6 +20,7 @@ internal class ExtraFilesGenerator : IFileGenerator
 // </auto-generated>
 //----------------------------------------------------------------------------------------
 
+{supportsNullable.IIf("#nullable enable")}
 using System;
 
 namespace Speckle.ProxyGenerator
@@ -67,6 +69,7 @@ namespace Speckle.ProxyGenerator
 
         Internal = 1
     }}
+{supportsNullable.IIf("#nullable restore")}
 }}"
         );
     }
