@@ -100,4 +100,13 @@ internal static class NamedTypeSymbolExtensions
 
         return realizedInterfaces;
     }
+
+    public static IEnumerable<INamedTypeSymbol> ResolveBaseInterfaces(
+        this INamedTypeSymbol symbol, List<INamedTypeSymbol> previousInterfaces
+    )
+    {
+        // Direct interfaces, recursive interfaces or base class interfaces should go here.
+        var interfaces = new List<INamedTypeSymbol>(symbol.Interfaces);
+        return interfaces.Except(previousInterfaces);
+    }
 }

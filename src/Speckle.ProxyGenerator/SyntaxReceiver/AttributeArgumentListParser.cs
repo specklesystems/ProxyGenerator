@@ -48,32 +48,18 @@ internal static class AttributeArgumentListParser
                 result = result with { MembersToIgnore = membersToIgnore };
                 continue;
             }
-            if (TryParseAsBoolean(argument.Expression, out var proxyBaseClasses))
-            {
-                result = result with { ProxyBaseClasses = proxyBaseClasses };
-                continue;
-            }
-
             if (TryParseAsEnum<ProxyClassAccessibility>(argument.Expression, out var accessibility))
             {
                 result = result with { Accessibility = accessibility };
             }
+
+            if (TryParseAsEnum<ImplementationOptions>(argument.Expression, out var options))
+            {
+                result = result with { Options = options };
+            }
         }
 
         return result;
-    }
-
-    private static bool TryParseAsBoolean(ExpressionSyntax expressionSyntax, out bool value)
-    {
-        value = default;
-
-        if (expressionSyntax is LiteralExpressionSyntax literalExpressionSyntax)
-        {
-            value = literalExpressionSyntax.Kind() == SyntaxKind.TrueLiteralExpression;
-            return true;
-        }
-
-        return false;
     }
 
     private static bool TryParseAsType(

@@ -5,14 +5,14 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Speckle.ProxyGenerator.Enums;
 using Speckle.ProxyGenerator.Extensions;
 using Speckle.ProxyGenerator.Models;
+using Speckle.ProxyGenerator.Types;
 using Speckle.ProxyGenerator.Utils;
 
 namespace Speckle.ProxyGenerator.FileGenerators;
 
 internal class PartialInterfacesGenerator : BaseGenerator, IFilesGenerator
 {
-    private IReadOnlyCollection<INamedTypeSymbol> _implementedInterfaces =
-        new List<INamedTypeSymbol>();
+    private List<INamedTypeSymbol> _implementedInterfaces = new();
 
     public PartialInterfacesGenerator(Context context, bool supportsNullable)
         : base(context, supportsNullable) { }
@@ -67,7 +67,7 @@ internal class PartialInterfacesGenerator : BaseGenerator, IFilesGenerator
 
         fileData = new FileData(
             $"{sourceInterfaceSymbol.Symbol.GetFullMetadataName()}.g.cs",
-            CreatePartialInterfaceCode(pd.Namespace, targetClassSymbol, interfaceName, pd)
+            CreatePartialInterfaceCode(pd.Namespace, targetClassSymbol, sourceInterfaceSymbol,interfaceName, pd)
         );
 
         return true;
@@ -76,14 +76,25 @@ internal class PartialInterfacesGenerator : BaseGenerator, IFilesGenerator
     private string CreatePartialInterfaceCode(
         string ns,
         ClassSymbol classSymbol,
+        ClassSymbol interfaceSymbol,
         string interfaceName,
         ProxyData proxyData
     )
     {
         var extendsProxyClasses = GetExtendsProxyData(proxyData, classSymbol);
-        _implementedInterfaces = classSymbol.Symbol.ResolveImplementedInterfaces(
-            proxyData.ProxyBaseClasses
-        );
+        _implementedInterfaces.AddRange(classSymbol.Symbol.ResolveImplementedInterfaces(
+            proxyData.Options.HasFlag(ImplementationOptions.ProxyBaseClasses)
+        ));
+        if (proxyData.Options.HasFlag(ImplementationOptions.UseBaseInterfaces))
+        {
+            _implementedInterfaces.AddRange(interfaceSymbol.Symbol.ResolveBaseInterfaces(_implementedInterfaces));
+            //don't readd self
+            if (_implementedInterfaces.Contains(interfaceSymbol.Symbol))
+            {
+                _implementedInterfaces.Remove(interfaceSymbol.Symbol);
+            }
+        }
+
         var implementedInterfacesNames = _implementedInterfaces
             .Select(i => i.ToFullyQualifiedDisplayString())
             .ToArray();
