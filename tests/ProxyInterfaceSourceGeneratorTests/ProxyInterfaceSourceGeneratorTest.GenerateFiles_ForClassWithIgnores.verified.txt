@@ -20,7 +20,7 @@ namespace Speckle.ProxyGenerator
     internal sealed class ProxyAttribute : Attribute
     {
         public Type Type { get; }
-        public bool ProxyBaseClasses { get; }
+        public ImplementationOptions Options { get; }
         public ProxyClassAccessibility Accessibility { get; }
         public string[]? MembersToIgnore { get; }
 
@@ -28,26 +28,26 @@ namespace Speckle.ProxyGenerator
         {
         }
 
-        public ProxyAttribute(Type type, bool proxyBaseClasses) : this(type, proxyBaseClasses, ProxyClassAccessibility.Public)
+        public ProxyAttribute(Type type, ImplementationOptions options) : this(type, options, ProxyClassAccessibility.Public)
         {
         }
 
-       	public ProxyAttribute(Type type, ProxyClassAccessibility accessibility) : this(type, false, accessibility)
+       	public ProxyAttribute(Type type, ProxyClassAccessibility accessibility) : this(type, ImplementationOptions.None, accessibility)
         {
         }
 
-        public ProxyAttribute(Type type, bool proxyBaseClasses, ProxyClassAccessibility accessibility) : this(type, proxyBaseClasses, accessibility, null)
+        public ProxyAttribute(Type type, ImplementationOptions options, ProxyClassAccessibility accessibility) : this(type, options, accessibility, null)
         {
         }
 
-        public ProxyAttribute(Type type, string[]? membersToIgnore) : this(type, false, ProxyClassAccessibility.Public, null)
+        public ProxyAttribute(Type type, string[]? membersToIgnore) : this(type, ImplementationOptions.None, ProxyClassAccessibility.Public, null)
         {
         }
 
-        public ProxyAttribute(Type type, bool proxyBaseClasses, ProxyClassAccessibility accessibility, string[]? membersToIgnore)
+        public ProxyAttribute(Type type, ImplementationOptions options, ProxyClassAccessibility accessibility, string[]? membersToIgnore)
         {
             Type = type;
-            ProxyBaseClasses = proxyBaseClasses;
+            Options = options;
             Accessibility = accessibility;
             MembersToIgnore = membersToIgnore;
         }
@@ -59,6 +59,15 @@ namespace Speckle.ProxyGenerator
         Public = 0,
 
         Internal = 1
+    }
+    [Flags]
+    internal enum ImplementationOptions
+    {
+        None = 0,
+
+        ProxyBaseClasses = 1,
+
+        UseBaseInterfaces = 2
     }
 #nullable restore
 }
