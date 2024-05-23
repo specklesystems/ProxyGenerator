@@ -89,15 +89,15 @@ using System;
 
 namespace ProxyInterfaceSourceGeneratorTests.Source
 {
-    public partial interface IFoo2
+    public partial interface IFoo2 : global::ProxyInterfaceSourceGeneratorTests.Source.IFoo2Base
     {
         global::ProxyInterfaceSourceGeneratorTests.Source.Foo2 _Instance { get; }
 
         global::ProxyInterfaceSourceGeneratorTests.Source.IFoo2[] Foos { get; set; }
 
-        global::ProxyInterfaceSourceGeneratorTests.Source.IFoo2[] DoSomethingAndGetAnArrayOfFoos();
+        int Weird { get; set; }
 
-        int Weird2();
+        global::ProxyInterfaceSourceGeneratorTests.Source.IFoo2[] DoSomethingAndGetAnArrayOfFoos();
     }
 }
 #nullable restore
@@ -124,6 +124,8 @@ namespace ProxyInterfaceSourceGeneratorTests.Source
         public global::ProxyInterfaceSourceGeneratorTests.Source.Foo2 _Instance { get; }
         
         public global::ProxyInterfaceSourceGeneratorTests.Source.IFoo2[] Foos { get => Mapster.TypeAdapter.Adapt<global::ProxyInterfaceSourceGeneratorTests.Source.IFoo2[]>(_Instance.Foos); set => _Instance.Foos = Mapster.TypeAdapter.Adapt<ProxyInterfaceSourceGeneratorTests.Source.Foo2[]>(value); }
+
+        public int Weird { get => _Instance.Weird; set => _Instance.Weird = value; }
 
         public global::ProxyInterfaceSourceGeneratorTests.Source.IFoo2[] DoSomethingAndGetAnArrayOfFoos()
         {

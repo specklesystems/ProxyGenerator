@@ -1,14 +1,20 @@
 using CSharp.SourceGenerators.Extensions;
 using CSharp.SourceGenerators.Extensions.Models;
 using FluentAssertions;
-using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using ProxyInterfaceSourceGeneratorTests.Source.Disposable;
 using Speckle.ProxyGenerator;
-using Xunit.Abstractions;
 
 namespace ProxyInterfaceSourceGeneratorTests;
+[Flags]
+public enum ImplementationOptions
+{
+    None = 0,
 
+    ProxyBaseClasses = 1,
+
+    UseBaseInterfaces = 2
+}
 public class InheritedInterfaceTests
 {
     private const string Namespace = "ProxyInterfaceSourceGeneratorTests.Source.Disposable";
@@ -25,10 +31,10 @@ public class InheritedInterfaceTests
     }
 
     [Theory]
-    [InlineData(false, false)]
-    [InlineData(true, true)]
+    [InlineData(ImplementationOptions.None, false)]
+    [InlineData(ImplementationOptions.ProxyBaseClasses, true)]
     public void GenerateFiles_InheritedInterface_InheritFromBaseClass(
-        bool proxyBaseClass,
+        ImplementationOptions options,
         bool inheritBaseInterface
     )
     {
@@ -39,7 +45,7 @@ public class InheritedInterfaceTests
         // Arrange
         string[] fileNames = [$"{Namespace}.{interfaceName}.g.cs", $"{Namespace}.{proxyName}.g.cs"];
         var path = $"./Source/Disposable/{interfaceName}.cs";
-        SourceFile sourceFile = CreateSourceFile(path, name, proxyBaseClass);
+        SourceFile sourceFile = CreateSourceFile(path, name,options);
 
         // Act
         var result = _sut.Execute([sourceFile]);
@@ -72,7 +78,7 @@ public class InheritedInterfaceTests
         string[] fileNames = [$"{Namespace}.{interfaceName}.g.cs", $"{Namespace}.{proxyName}.g.cs"];
 
         var path = $"./Source/Disposable/{interfaceName}.cs";
-        SourceFile sourceFile = CreateSourceFile(path, name, true);
+        SourceFile sourceFile = CreateSourceFile(path, name, ImplementationOptions.ProxyBaseClasses);
 
         // Act
         var result = _sut.Execute([sourceFile]);
@@ -107,7 +113,7 @@ public class InheritedInterfaceTests
         string[] fileNames = [$"{Namespace}.{interfaceName}.g.cs", $"{Namespace}.{proxyName}.g.cs"];
         var interfaceIndex = 1;
         var path = $"./Source/Disposable/{interfaceName}.cs";
-        SourceFile sourceFile = CreateSourceFile(path, name, true);
+        SourceFile sourceFile = CreateSourceFile(path, name, ImplementationOptions.ProxyBaseClasses);
 
         // Act
         var result = _sut.Execute([sourceFile]);
@@ -130,9 +136,8 @@ public class InheritedInterfaceTests
         Assert.True(noInterfaceImplementationFound);
     }
 
-    private static SourceFile CreateSourceFile(string path, string name, bool extend)
+    private static SourceFile CreateSourceFile(string path, string name,  ImplementationOptions options)
     {
-        var extendString = extend.ToString().ToLowerInvariant();
         return new SourceFile
         {
             Path = path,
@@ -140,7 +145,7 @@ public class InheritedInterfaceTests
             AttributeToAddToInterface = new ExtraAttribute
             {
                 Name = "Speckle.ProxyGenerator.Proxy",
-                ArgumentList = $"typeof({Namespace}.{name}), {extendString}"
+                ArgumentList = $"typeof({Namespace}.{name}), ImplementationOptions.{options.ToString()}"
             }
         };
     }
