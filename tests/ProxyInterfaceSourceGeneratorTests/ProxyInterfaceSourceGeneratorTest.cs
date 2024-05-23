@@ -145,7 +145,7 @@ public class ProxyInterfaceSourceGeneratorTest
                 ArgumentList = new[]
                 {
                     "typeof(ProxyInterfaceSourceGeneratorTests.Source.Foo2)",
-                    "ImplementationOptions.UseBaseInterfaces", "ProxyClassAccessibility.Public"
+                    "ImplementationOptions.UseExtendedInterfaces", "ProxyClassAccessibility.Public"
                 }
             }
         };
@@ -389,7 +389,7 @@ public class ProxyInterfaceSourceGeneratorTest
                 ArgumentList = new[]
                 {
                     "typeof(ProxyInterfaceSourceGeneratorTests.Source.PersonExtends)",
-                    "true"
+                    "ImplementationOptions.ProxyBaseClasses"
                 }
             }
         };
@@ -726,7 +726,7 @@ public class ProxyInterfaceSourceGeneratorTest
                     ArgumentList = new[]
                     {
                         $"typeof(ProxyInterfaceSourceGeneratorTests.Namespace{x}.{@class})",
-                        "true"
+                        "ImplementationOptions.ProxyBaseClasses"
                     }
                 }
             };

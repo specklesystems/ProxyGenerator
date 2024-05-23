@@ -12,7 +12,7 @@ using System;
 
 namespace ProxyInterfaceSourceGeneratorTests.Source.PnP
 {
-    public partial interface IClientRuntimeContext : global::System.IDisposable
+    public partial interface IClientRuntimeContext
     {
         global::Microsoft.SharePoint.Client.ClientRuntimeContext _Instance { get; }
 
@@ -76,6 +76,8 @@ namespace ProxyInterfaceSourceGeneratorTests.Source.PnP
         global::System.Collections.Generic.IEnumerable<T> LoadQuery<T>(global::Microsoft.SharePoint.Client.ClientObjectCollection<T> clientObjects) where T : Microsoft.SharePoint.Client.ClientObject;
 
         global::System.Collections.Generic.IEnumerable<T> LoadQuery<T>(global::System.Linq.IQueryable<T> clientObjects) where T : Microsoft.SharePoint.Client.ClientObject;
+
+        void Dispose();
     }
 }
 #nullable restore

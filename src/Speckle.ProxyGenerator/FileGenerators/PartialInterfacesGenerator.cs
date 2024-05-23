@@ -81,11 +81,13 @@ internal class PartialInterfacesGenerator : BaseGenerator, IFilesGenerator
         ProxyData proxyData
     )
     {
+        _implementedInterfaces.Clear();
         var extendsProxyClasses = GetExtendsProxyData(proxyData, classSymbol);
         _implementedInterfaces.AddRange(classSymbol.Symbol.ResolveImplementedInterfaces(
-            proxyData.Options.HasFlag(ImplementationOptions.ProxyBaseClasses)
+            proxyData.Options.HasFlag(ImplementationOptions.ProxyBaseClasses),
+            proxyData.Options.HasFlag(ImplementationOptions.ProxyInterfaces)
         ));
-        if (proxyData.Options.HasFlag(ImplementationOptions.UseBaseInterfaces))
+        if (proxyData.Options.HasFlag(ImplementationOptions.UseExtendedInterfaces))
         {
             _implementedInterfaces.AddRange(interfaceSymbol.Symbol.ResolveBaseInterfaces(_implementedInterfaces));
             //don't readd self
@@ -94,6 +96,8 @@ internal class PartialInterfacesGenerator : BaseGenerator, IFilesGenerator
                 _implementedInterfaces.Remove(interfaceSymbol.Symbol);
             }
         }
+
+        _implementedInterfaces = _implementedInterfaces.Distinct().ToList();
 
         var implementedInterfacesNames = _implementedInterfaces
             .Select(i => i.ToFullyQualifiedDisplayString())

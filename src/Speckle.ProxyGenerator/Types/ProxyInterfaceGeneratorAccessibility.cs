@@ -15,5 +15,7 @@ internal enum ImplementationOptions
 
    ProxyBaseClasses = 1,
 
-    UseBaseInterfaces = 2
+   ProxyInterfaces = 2,
+
+    UseExtendedInterfaces = 4
 }

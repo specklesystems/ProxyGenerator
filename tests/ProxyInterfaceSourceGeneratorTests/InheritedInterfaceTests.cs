@@ -13,7 +13,9 @@ public enum ImplementationOptions
 
     ProxyBaseClasses = 1,
 
-    UseBaseInterfaces = 2
+    ProxyInterfaces = 2,
+
+    UseExtendedInterfaces = 4
 }
 public class InheritedInterfaceTests
 {
@@ -32,7 +34,7 @@ public class InheritedInterfaceTests
 
     [Theory]
     [InlineData(ImplementationOptions.None, false)]
-    [InlineData(ImplementationOptions.ProxyBaseClasses, true)]
+    [InlineData(ImplementationOptions.ProxyBaseClasses | ImplementationOptions.ProxyInterfaces, true)]
     public void GenerateFiles_InheritedInterface_InheritFromBaseClass(
         ImplementationOptions options,
         bool inheritBaseInterface
@@ -78,7 +80,7 @@ public class InheritedInterfaceTests
         string[] fileNames = [$"{Namespace}.{interfaceName}.g.cs", $"{Namespace}.{proxyName}.g.cs"];
 
         var path = $"./Source/Disposable/{interfaceName}.cs";
-        SourceFile sourceFile = CreateSourceFile(path, name, ImplementationOptions.ProxyBaseClasses);
+        SourceFile sourceFile = CreateSourceFile(path, name, ImplementationOptions.ProxyInterfaces | ImplementationOptions.ProxyBaseClasses | ImplementationOptions.UseExtendedInterfaces);
 
         // Act
         var result = _sut.Execute([sourceFile]);
@@ -94,9 +96,9 @@ public class InheritedInterfaceTests
 
         // Assert
         Assert.Single(interfaceDeclarations);
-        var baseList = interfaceDeclarations.First().BaseList!;
-        Assert.Equal(2, baseList.Types.Count);
-        var type1 = (QualifiedNameSyntax)baseList.Types[0].Type;
+        var baseList = interfaceDeclarations.First().BaseList;
+        Assert.Equal(2, baseList?.Types.Count);
+        var type1 = (QualifiedNameSyntax)baseList!.Types[0].Type;
         var type2 = (QualifiedNameSyntax)baseList.Types[1].Type;
         Assert.Equal(nameof(IDisposable), type1.Right.Identifier.Text);
         Assert.Equal(nameof(IUpdate<string>), type2.Right.Identifier.Text);
@@ -113,7 +115,7 @@ public class InheritedInterfaceTests
         string[] fileNames = [$"{Namespace}.{interfaceName}.g.cs", $"{Namespace}.{proxyName}.g.cs"];
         var interfaceIndex = 1;
         var path = $"./Source/Disposable/{interfaceName}.cs";
-        SourceFile sourceFile = CreateSourceFile(path, name, ImplementationOptions.ProxyBaseClasses);
+        SourceFile sourceFile = CreateSourceFile(path, name, ImplementationOptions.UseExtendedInterfaces);
 
         // Act
         var result = _sut.Execute([sourceFile]);
@@ -138,6 +140,24 @@ public class InheritedInterfaceTests
 
     private static SourceFile CreateSourceFile(string path, string name,  ImplementationOptions options)
     {
+        var o = string.Empty;
+        foreach (var val in Enum.GetValues<ImplementationOptions>())
+        {
+            if (!options.HasFlag(val))
+            {
+                continue;
+            }
+            if (o.Length > 0)
+            {
+                o += " | ";
+            }
+
+            o += "ImplementationOptions." + val.ToString();
+        }
+        if (o.Length == 0)
+        {
+            o  = "ImplementationOptions.None";
+        }
         return new SourceFile
         {
             Path = path,
@@ -145,7 +165,7 @@ public class InheritedInterfaceTests
             AttributeToAddToInterface = new ExtraAttribute
             {
                 Name = "Speckle.ProxyGenerator.Proxy",
-                ArgumentList = $"typeof({Namespace}.{name}), ImplementationOptions.{options.ToString()}"
+                ArgumentList = $"typeof({Namespace}.{name}), {o}"
             }
         };
     }
