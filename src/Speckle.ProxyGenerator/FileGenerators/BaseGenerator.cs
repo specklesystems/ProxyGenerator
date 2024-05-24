@@ -11,6 +11,7 @@ namespace Speckle.ProxyGenerator.FileGenerators;
 
 internal abstract class BaseGenerator
 {
+    protected const string globalPrefix = "global::";
     protected readonly Context Context;
     protected readonly bool SupportsNullable;
 
@@ -219,7 +220,6 @@ internal abstract class BaseGenerator
     )
     {
         classSymbol = default;
-        const string globalPrefix = "global::";
         if (name.StartsWith(globalPrefix, StringComparison.Ordinal))
         {
             name = name.Substring(globalPrefix.Length);

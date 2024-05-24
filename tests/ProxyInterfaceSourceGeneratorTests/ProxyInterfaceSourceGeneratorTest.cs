@@ -167,13 +167,13 @@ public class ProxyInterfaceSourceGeneratorTest
         // Arrange
         var fileNames = new[]
         {
-            "ProxyInterfaceSourceGeneratorTests.Source.IFoo3.g.cs",
+            "ProxyInterfaceSourceGeneratorTests.Source.IFoo3Proxy.g.cs",
             "ProxyInterfaceSourceGeneratorTests.Source.Foo3Proxy.g.cs",
-            "ProxyInterfaceSourceGeneratorTests.Source.IBar3.g.cs",
+            "ProxyInterfaceSourceGeneratorTests.Source.IBar3Proxy.g.cs",
             "ProxyInterfaceSourceGeneratorTests.Source.Bar3Proxy.g.cs"
         };
 
-        var path = "./Source/IFoo3Base.cs";
+        var path = "./Source/IFoo3Proxy.cs";
         var sourceFile = new SourceFile
         {
             Path = path,
@@ -184,11 +184,12 @@ public class ProxyInterfaceSourceGeneratorTest
                 ArgumentList = new[]
                 {
                     "typeof(ProxyInterfaceSourceGeneratorTests.Source.Foo3)",
-                    "ImplementationOptions.UseExtendedInterfaces", "ProxyClassAccessibility.Public"
+                    "ImplementationOptions.UseExtendedInterfaces | ImplementationOptions.ProxyForBaseInterface",
+                    "ProxyClassAccessibility.Public"
                 }
             }
         };
-        var path2 = "./Source/IBarBase3.cs";
+        var path2 = "./Source/IBar3Proxy.cs";
         var sourceFile2 = new SourceFile
         {
             Path = path2,
@@ -199,7 +200,8 @@ public class ProxyInterfaceSourceGeneratorTest
                 ArgumentList = new[]
                 {
                     "typeof(ProxyInterfaceSourceGeneratorTests.Source.Bar3)",
-                    "ImplementationOptions.UseExtendedInterfaces", "ProxyClassAccessibility.Public"
+                    "ImplementationOptions.UseExtendedInterfaces | ImplementationOptions.ProxyForBaseInterface",
+                    "ProxyClassAccessibility.Public"
                 }
             }
         };

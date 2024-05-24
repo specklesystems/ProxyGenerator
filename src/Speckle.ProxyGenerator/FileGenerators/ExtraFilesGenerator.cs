@@ -78,7 +78,9 @@ namespace Speckle.ProxyGenerator
 
        ProxyInterfaces = 2,
 
-        UseExtendedInterfaces = 4
+        UseExtendedInterfaces = 4,
+
+    ProxyForBaseInterface = 8
     }}
 {supportsNullable.IIf("#nullable restore")}
 }}"

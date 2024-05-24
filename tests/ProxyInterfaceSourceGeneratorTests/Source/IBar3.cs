@@ -1,6 +1,5 @@
 namespace ProxyInterfaceSourceGeneratorTests.Source;
 
-public partial interface IBar3 : IBarBase3
+public partial interface IBar3
 {
-
 }

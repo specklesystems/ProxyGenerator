@@ -15,7 +15,9 @@ public enum ImplementationOptions
 
     ProxyInterfaces = 2,
 
-    UseExtendedInterfaces = 4
+    UseExtendedInterfaces = 4,
+
+    ProxyForBaseInterface = 8
 }
 public class InheritedInterfaceTests
 {

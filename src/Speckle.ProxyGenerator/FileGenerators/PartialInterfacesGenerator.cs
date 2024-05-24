@@ -90,9 +90,9 @@ internal class PartialInterfacesGenerator : BaseGenerator, IFilesGenerator
         if (proxyData.Options.HasFlag(ImplementationOptions.UseExtendedInterfaces))
         {
             var bases = interfaceSymbol.Symbol.ResolveBaseInterfaces(_implementedInterfaces).ToList();
-            if (bases.Count == 1)
+            if (bases.Count == 1 && proxyData.Options.HasFlag(ImplementationOptions.ProxyForBaseInterface))
             {
-                proxyData.FullQualifiedMappedTypeName = bases.Single().GetFullMetadataName();
+                proxyData.FullQualifiedMappedTypeName = globalPrefix + bases.Single().GetFullMetadataName();
             }
             _implementedInterfaces.AddRange(bases);
             //don't readd self

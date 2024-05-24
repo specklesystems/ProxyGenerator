@@ -1,4 +1,8 @@
 namespace ProxyInterfaceSourceGeneratorTests.Source
 {
-    public partial interface IFoo3: IFoo2Base { }
+    public partial interface IFoo3
+    {
+        IBar3 Weird();
+    }
+
 }
