@@ -53,6 +53,10 @@ namespace Speckle.ProxyGenerator
         {{
         }}
 
+        public ProxyAttribute(Type type, ImplementationOptions options, string[]? membersToIgnore) : this(type, options, ProxyClassAccessibility.Public, null)
+        {{
+        }}
+
         public ProxyAttribute(Type type, ImplementationOptions options, ProxyClassAccessibility accessibility, string[]? membersToIgnore)
         {{
             Type = type;
@@ -74,13 +78,13 @@ namespace Speckle.ProxyGenerator
     {{
         None = 0,
 
-       ProxyBaseClasses = 1,
+        ProxyBaseClasses = 1,
 
-       ProxyInterfaces = 2,
+        ProxyInterfaces = 2,
 
         UseExtendedInterfaces = 4,
 
-    ProxyForBaseInterface = 8
+        ProxyForBaseInterface = 8
     }}
 {supportsNullable.IIf("#nullable restore")}
 }}"
