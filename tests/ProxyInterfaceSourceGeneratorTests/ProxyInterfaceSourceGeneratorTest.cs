@@ -162,6 +162,60 @@ public class ProxyInterfaceSourceGeneratorTest
     }
 
     [Fact]
+    public Task GenerateFiles_ForClassWith_Extended()
+    {
+        // Arrange
+        var fileNames = new[]
+        {
+            "ProxyInterfaceSourceGeneratorTests.Source.IFoo3.g.cs",
+            "ProxyInterfaceSourceGeneratorTests.Source.Foo3Proxy.g.cs",
+            "ProxyInterfaceSourceGeneratorTests.Source.IBar3.g.cs",
+            "ProxyInterfaceSourceGeneratorTests.Source.Bar3Proxy.g.cs"
+        };
+
+        var path = "./Source/IFoo3Base.cs";
+        var sourceFile = new SourceFile
+        {
+            Path = path,
+            Text = File.ReadAllText(path),
+            AttributeToAddToInterface = new ExtraAttribute
+            {
+                Name = "Speckle.ProxyGenerator.Proxy",
+                ArgumentList = new[]
+                {
+                    "typeof(ProxyInterfaceSourceGeneratorTests.Source.Foo3)",
+                    "ImplementationOptions.UseExtendedInterfaces", "ProxyClassAccessibility.Public"
+                }
+            }
+        };
+        var path2 = "./Source/IBarBase3.cs";
+        var sourceFile2 = new SourceFile
+        {
+            Path = path2,
+            Text = File.ReadAllText(path2),
+            AttributeToAddToInterface = new ExtraAttribute
+            {
+                Name = "Speckle.ProxyGenerator.Proxy",
+                ArgumentList = new[]
+                {
+                    "typeof(ProxyInterfaceSourceGeneratorTests.Source.Bar3)",
+                    "ImplementationOptions.UseExtendedInterfaces", "ProxyClassAccessibility.Public"
+                }
+            }
+        };
+        // Act
+        var result = _sut.Execute(new[] { sourceFile, sourceFile2 });
+
+        // Assert
+        result.Valid.Should().BeTrue();
+        result.Files.Should().HaveCount(fileNames.Length + 1);
+
+        // Verify
+        var results = result.GeneratorDriver.GetRunResult().Results.First().GeneratedSources;
+        return Verify(results);
+    }
+
+    [Fact]
     public void GenerateFiles_ForGenericType_Should_GenerateCorrectFiles()
     {
         // Arrange

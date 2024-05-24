@@ -35,6 +35,11 @@ internal abstract class BaseGenerator
         [NotNullWhen(true)] out ProxyData? proxyData
     )
     {
+        proxyData = Context.Candidates.Values.FirstOrDefault(x => x.FullQualifiedMappedTypeName == type);
+        if (proxyData is not null)
+        {
+            return true;
+        }
         proxyData = Context.Candidates.Values.FirstOrDefault(x => x.FullQualifiedTypeName == type);
         return proxyData != null;
     }

@@ -14,6 +14,8 @@ internal class ProxyData
 
     public string FullQualifiedTypeName { get; }
 
+    public string? FullQualifiedMappedTypeName { get; set; }
+
     public string ShortMetadataName { get; }
 
     public string FullMetadataTypeName { get; }

@@ -12,7 +12,7 @@ using System;
 
 namespace ProxyInterfaceSourceGeneratorTests.Source.PnP
 {
-    public partial interface IWeb
+    public partial interface IWeb : global::ProxyInterfaceSourceGeneratorTests.Source.PnP.ISecurableObject
     {
         new global::Microsoft.SharePoint.Client.Web _Instance { get; }
 
