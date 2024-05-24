@@ -82,7 +82,6 @@ internal class PartialInterfacesGenerator : BaseGenerator, IFilesGenerator
     )
     {
         _implementedInterfaces.Clear();
-        var extendsProxyClasses = GetExtendsProxyData(classSymbol);
         _implementedInterfaces.AddRange(classSymbol.Symbol.ResolveImplementedInterfaces(
             proxyData.Options.HasFlag(ImplementationOptions.ProxyBaseClasses),
             proxyData.Options.HasFlag(ImplementationOptions.ProxyInterfaces)
@@ -103,6 +102,7 @@ internal class PartialInterfacesGenerator : BaseGenerator, IFilesGenerator
         }
 
         _implementedInterfaces = _implementedInterfaces.Distinct().ToList();
+        var isNew = GetExtendsProxyData(classSymbol, proxyData.Options.HasFlag(ImplementationOptions.UseExtendedInterfaces)).Any();
 
         var implementedInterfacesNames = _implementedInterfaces
             .Select(i => i.ToFullyQualifiedDisplayString())
@@ -110,7 +110,7 @@ internal class PartialInterfacesGenerator : BaseGenerator, IFilesGenerator
         var implements = implementedInterfacesNames.Any()
             ? $" : {string.Join(", ", implementedInterfacesNames)}"
             : string.Empty;
-        var @new = extendsProxyClasses.Any() ? "new " : string.Empty;
+        var @new = isNew ? "new " : string.Empty;
         var (namespaceStart, namespaceEnd) = NamespaceBuilder.Build(ns);
         var events = GenerateEvents(classSymbol, proxyData);
         var properties = GenerateProperties(classSymbol, proxyData);

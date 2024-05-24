@@ -288,7 +288,7 @@ internal abstract class BaseGenerator
     }
 
     protected IReadOnlyList<ProxyData> GetExtendsProxyData(
-        ClassSymbol targetClassSymbol
+        ClassSymbol targetClassSymbol, bool useFullQualifiedMappedTypeName
     )
     {
         var extendsProxyClasses = new List<ProxyData>();
@@ -297,11 +297,22 @@ internal abstract class BaseGenerator
             var candidate = Context.Candidates.Values.FirstOrDefault(ci =>
                 ci.FullQualifiedTypeName == baseType.ToFullyQualifiedDisplayString()
             );
-            //is a candidate and overrides
-            if (candidate?.FullQualifiedMappedTypeName != null)
+            if (useFullQualifiedMappedTypeName)
             {
-                extendsProxyClasses.Add(candidate);
-                break;
+                //is a candidate and overrides
+                if (candidate?.FullQualifiedMappedTypeName != null)
+                {
+                    extendsProxyClasses.Add(candidate);
+                    break;
+                }
+            }
+            else
+            {
+                if (candidate != null)
+                {
+                    extendsProxyClasses.Add(candidate);
+                    break;
+                }
             }
         }
         return extendsProxyClasses;
