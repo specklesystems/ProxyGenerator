@@ -1,5 +1,6 @@
 using Microsoft.CodeAnalysis;
 using Speckle.ProxyGenerator.Models;
+using Speckle.ProxyGenerator.Types;
 
 namespace Speckle.ProxyGenerator.Utils;
 
@@ -108,7 +109,7 @@ internal static class MemberHelper
         var ownMembers = membersQuery.ToList();
         var ownMemberNames = ownMembers.Select(x => x.Name);
 
-        if (!proxyData.ProxyBaseClasses)
+        if (!proxyData.Options.HasFlag(ImplementationOptions.ProxyBaseClasses))
         {
             return ownMembers;
         }

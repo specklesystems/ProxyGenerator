@@ -10,9 +10,12 @@ internal class ProxyData
 
     public string ShortInterfaceName { get; }
 
-    public string FullInterfaceName { get; }
+    private string _fullInterfaceName;
+    public string FullInterfaceName => FullQualifiedMappedTypeName ?? _fullInterfaceName;
 
     public string FullQualifiedTypeName { get; }
+
+    public string? FullQualifiedMappedTypeName { get; set; }
 
     public string ShortMetadataName { get; }
 
@@ -20,8 +23,7 @@ internal class ProxyData
 
     public List<string> Usings { get; }
 
-    public bool ProxyBaseClasses { get; }
-
+    public ImplementationOptions Options { get; }
     public ProxyClassAccessibility Accessibility { get; }
     public string[] MembersToIgnore { get; }
 
@@ -34,7 +36,7 @@ internal class ProxyData
         string shortMetadataTypeName,
         string fullMetadataTypeName,
         List<string> usings,
-        bool proxyBaseClasses,
+        ImplementationOptions options,
         ProxyClassAccessibility accessibility,
         string[] membersToIgnore
     )
@@ -43,7 +45,7 @@ internal class ProxyData
         NamespaceDot = namespaceDot ?? throw new ArgumentNullException(nameof(namespaceDot));
         ShortInterfaceName =
             shortInterfaceName ?? throw new ArgumentNullException(nameof(shortInterfaceName));
-        FullInterfaceName =
+        _fullInterfaceName =
             fullInterfaceName ?? throw new ArgumentNullException(nameof(fullInterfaceName));
         FullQualifiedTypeName =
             fullQualifiedTypeName ?? throw new ArgumentNullException(nameof(fullQualifiedTypeName));
@@ -52,7 +54,7 @@ internal class ProxyData
         FullMetadataTypeName =
             fullMetadataTypeName ?? throw new ArgumentNullException(nameof(fullMetadataTypeName));
         Usings = usings ?? throw new ArgumentNullException(nameof(usings));
-        ProxyBaseClasses = proxyBaseClasses;
+        Options = options;
         Accessibility = accessibility;
         MembersToIgnore = membersToIgnore;
     }

@@ -7,3 +7,17 @@ internal enum ProxyClassAccessibility
 
     Internal = 1
 }
+
+[Flags]
+internal enum ImplementationOptions
+{
+    None = 0,
+
+   ProxyBaseClasses = 1,
+
+   ProxyInterfaces = 2,
+
+    UseExtendedInterfaces = 4,
+
+    ProxyForBaseInterface = 8
+}

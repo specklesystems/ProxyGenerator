@@ -104,7 +104,7 @@ public class ProxyInterfaceSourceGeneratorTest
                 ArgumentList = new[]
                 {
                     "typeof(ProxyInterfaceSourceGeneratorTests.Source.Foo2)",
-                    "false",
+                    "ImplementationOptions.None",
                     "ProxyClassAccessibility.Public",
                     "new []{\"Weird\",\"NotHere\"}"
                 }
@@ -113,6 +113,100 @@ public class ProxyInterfaceSourceGeneratorTest
 
         // Act
         var result = _sut.Execute(new[] { sourceFile });
+
+        // Assert
+        result.Valid.Should().BeTrue();
+        result.Files.Should().HaveCount(fileNames.Length + 1);
+
+        // Verify
+        var results = result.GeneratorDriver.GetRunResult().Results.First().GeneratedSources;
+        return Verify(results);
+    }
+
+
+    [Fact]
+    public Task GenerateFiles_ForClassWith_BaseInterface()
+    {
+        // Arrange
+        var fileNames = new[]
+        {
+            "ProxyInterfaceSourceGeneratorTests.Source.IFoo2.g.cs",
+            "ProxyInterfaceSourceGeneratorTests.Source.Foo2Proxy.g.cs"
+        };
+
+        var path = "./Source/IFoo2.cs";
+        var sourceFile = new SourceFile
+        {
+            Path = path,
+            Text = File.ReadAllText(path),
+            AttributeToAddToInterface = new ExtraAttribute
+            {
+                Name = "Speckle.ProxyGenerator.Proxy",
+                ArgumentList = new[]
+                {
+                    "typeof(ProxyInterfaceSourceGeneratorTests.Source.Foo2)",
+                    "ImplementationOptions.UseExtendedInterfaces", "ProxyClassAccessibility.Public"
+                }
+            }
+        };
+        // Act
+        var result = _sut.Execute(new[] { sourceFile });
+
+        // Assert
+        result.Valid.Should().BeTrue();
+        result.Files.Should().HaveCount(fileNames.Length + 1);
+
+        // Verify
+        var results = result.GeneratorDriver.GetRunResult().Results.First().GeneratedSources;
+        return Verify(results);
+    }
+
+    [Fact]
+    public Task GenerateFiles_ForClassWith_Extended()
+    {
+        // Arrange
+        var fileNames = new[]
+        {
+            "ProxyInterfaceSourceGeneratorTests.Source.IFoo3Proxy.g.cs",
+            "ProxyInterfaceSourceGeneratorTests.Source.Foo3Proxy.g.cs",
+            "ProxyInterfaceSourceGeneratorTests.Source.IBar3Proxy.g.cs",
+            "ProxyInterfaceSourceGeneratorTests.Source.Bar3Proxy.g.cs"
+        };
+
+        var path = "./Source/IFoo3Proxy.cs";
+        var sourceFile = new SourceFile
+        {
+            Path = path,
+            Text = File.ReadAllText(path),
+            AttributeToAddToInterface = new ExtraAttribute
+            {
+                Name = "Speckle.ProxyGenerator.Proxy",
+                ArgumentList = new[]
+                {
+                    "typeof(ProxyInterfaceSourceGeneratorTests.Source.Foo3)",
+                    "ImplementationOptions.UseExtendedInterfaces | ImplementationOptions.ProxyForBaseInterface",
+                    "ProxyClassAccessibility.Public"
+                }
+            }
+        };
+        var path2 = "./Source/IBar3Proxy.cs";
+        var sourceFile2 = new SourceFile
+        {
+            Path = path2,
+            Text = File.ReadAllText(path2),
+            AttributeToAddToInterface = new ExtraAttribute
+            {
+                Name = "Speckle.ProxyGenerator.Proxy",
+                ArgumentList = new[]
+                {
+                    "typeof(ProxyInterfaceSourceGeneratorTests.Source.Bar3)",
+                    "ImplementationOptions.UseExtendedInterfaces | ImplementationOptions.ProxyForBaseInterface",
+                    "ProxyClassAccessibility.Public"
+                }
+            }
+        };
+        // Act
+        var result = _sut.Execute(new[] { sourceFile, sourceFile2 });
 
         // Assert
         result.Valid.Should().BeTrue();
@@ -351,7 +445,7 @@ public class ProxyInterfaceSourceGeneratorTest
                 ArgumentList = new[]
                 {
                     "typeof(ProxyInterfaceSourceGeneratorTests.Source.PersonExtends)",
-                    "true"
+                    "ImplementationOptions.ProxyBaseClasses"
                 }
             }
         };
@@ -688,7 +782,7 @@ public class ProxyInterfaceSourceGeneratorTest
                     ArgumentList = new[]
                     {
                         $"typeof(ProxyInterfaceSourceGeneratorTests.Namespace{x}.{@class})",
-                        "true"
+                        "ImplementationOptions.ProxyBaseClasses"
                     }
                 }
             };

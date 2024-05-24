@@ -48,7 +48,8 @@ internal static class NamedTypeSymbolExtensions
 
     public static List<INamedTypeSymbol> ResolveImplementedInterfaces(
         this INamedTypeSymbol symbol,
-        bool proxyBaseClasses
+        bool proxyBaseClasses,
+        bool proxyInterfaces
     )
     {
         // Members implemented by us or base classes should go here.
@@ -58,7 +59,11 @@ internal static class NamedTypeSymbolExtensions
             .ToList();
 
         // Direct interfaces, recursive interfaces or base class interfaces should go here.
-        var interfaces = new List<INamedTypeSymbol>(symbol.Interfaces);
+        var interfaces = new List<INamedTypeSymbol>();
+        if (proxyInterfaces)
+        {
+            interfaces.AddRange(symbol.Interfaces);
+        }
         var baseType = symbol.BaseType;
         while (
             proxyBaseClasses
@@ -69,7 +74,10 @@ internal static class NamedTypeSymbolExtensions
             publicMembers.AddRange(
                 baseType.GetMembers().Where(m => m.DeclaredAccessibility == Accessibility.Public)
             );
-            interfaces.AddRange(baseType.Interfaces);
+            if (proxyInterfaces)
+            {
+                interfaces.AddRange(baseType.Interfaces);
+            }
             baseType = baseType.BaseType;
         }
 
@@ -99,5 +107,14 @@ internal static class NamedTypeSymbolExtensions
         }
 
         return realizedInterfaces;
+    }
+
+    public static IEnumerable<INamedTypeSymbol> ResolveBaseInterfaces(
+        this INamedTypeSymbol symbol, List<INamedTypeSymbol> previousInterfaces
+    )
+    {
+        // Direct interfaces, recursive interfaces or base class interfaces should go here.
+        var interfaces = new List<INamedTypeSymbol>(symbol.Interfaces);
+        return interfaces.Except(previousInterfaces);
     }
 }

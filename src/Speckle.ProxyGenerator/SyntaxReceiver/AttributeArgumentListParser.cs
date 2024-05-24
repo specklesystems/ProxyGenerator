@@ -48,32 +48,18 @@ internal static class AttributeArgumentListParser
                 result = result with { MembersToIgnore = membersToIgnore };
                 continue;
             }
-            if (TryParseAsBoolean(argument.Expression, out var proxyBaseClasses))
-            {
-                result = result with { ProxyBaseClasses = proxyBaseClasses };
-                continue;
-            }
-
             if (TryParseAsEnum<ProxyClassAccessibility>(argument.Expression, out var accessibility))
             {
                 result = result with { Accessibility = accessibility };
             }
+
+            if (TryParseAsEnum<ImplementationOptions>(argument.Expression, out var options))
+            {
+                result = result with { Options = options };
+            }
         }
 
         return result;
-    }
-
-    private static bool TryParseAsBoolean(ExpressionSyntax expressionSyntax, out bool value)
-    {
-        value = default;
-
-        if (expressionSyntax is LiteralExpressionSyntax literalExpressionSyntax)
-        {
-            value = literalExpressionSyntax.Kind() == SyntaxKind.TrueLiteralExpression;
-            return true;
-        }
-
-        return false;
     }
 
     private static bool TryParseAsType(
@@ -100,22 +86,27 @@ internal static class AttributeArgumentListParser
     }
 
     private static bool TryParseAsEnum<TEnum>(ExpressionSyntax expressionSyntax, out TEnum value)
-        where TEnum : struct
+        where TEnum : struct, Enum
     {
         var enumAsString = expressionSyntax.ToString();
-        if (
-            enumAsString.Length > typeof(TEnum).Name.Length
-            && Enum.TryParse(
-                expressionSyntax.ToString().Substring(typeof(TEnum).Name.Length + 1),
-                out value
-            )
-        )
-        {
-            return true;
-        }
-
         value = default;
-        return false;
+        if (!enumAsString.Contains(typeof(TEnum).Name))
+        {
+            return false;
+        }
+        var splitter = new[] {$"{typeof(TEnum).Name}."};
+        var vals = enumAsString.Split(splitter, StringSplitOptions.RemoveEmptyEntries).Select(x => x.TrimEnd(' ', '|'));
+
+        long l = 0;
+        foreach (var v in vals)
+        {
+            if (Enum.TryParse<TEnum>(v, out var e))
+            {
+                l |= Convert.ToInt64(e);
+            }
+        }
+        value = (TEnum)Enum.ToObject(typeof(TEnum), l);;
+        return true;
     }
 
     private static bool TryParseAsStringArray(ExpressionSyntax expressionSyntax, out string[] value)

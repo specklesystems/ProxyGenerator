@@ -45,7 +45,7 @@ public class PnPTests
             AttributeToAddToInterface = new ExtraAttribute
             {
                 Name = "Speckle.ProxyGenerator.Proxy",
-                ArgumentList = "typeof(Microsoft.SharePoint.Client.ClientObject)"
+                ArgumentList = new [] { "typeof(Microsoft.SharePoint.Client.ClientObject)", "ImplementationOptions.UseExtendedInterfaces"}
             }
         };
 
@@ -57,7 +57,7 @@ public class PnPTests
             AttributeToAddToInterface = new ExtraAttribute
             {
                 Name = "Speckle.ProxyGenerator.Proxy",
-                ArgumentList = "typeof(SecurableObject)" // Only name, no namespace
+                ArgumentList =new [] { "typeof(SecurableObject)" , "ImplementationOptions.UseExtendedInterfaces"}// Only name, no namespace
             }
         };
 
@@ -69,7 +69,7 @@ public class PnPTests
             AttributeToAddToInterface = new ExtraAttribute
             {
                 Name = "Speckle.ProxyGenerator.Proxy",
-                ArgumentList = "typeof(Web)" // Only name, no namespace
+                ArgumentList = new [] { "typeof(Web)", "ImplementationOptions.UseExtendedInterfaces"} // Only name, no namespace
             }
         };
 
@@ -81,7 +81,7 @@ public class PnPTests
             AttributeToAddToInterface = new ExtraAttribute
             {
                 Name = "Speckle.ProxyGenerator.Proxy",
-                ArgumentList = "typeof(Microsoft.SharePoint.Client.ClientRuntimeContext)"
+                ArgumentList = new [] { "typeof(Microsoft.SharePoint.Client.ClientRuntimeContext)", "ImplementationOptions.UseExtendedInterfaces"}
             }
         };
 
@@ -93,7 +93,7 @@ public class PnPTests
             AttributeToAddToInterface = new ExtraAttribute
             {
                 Name = "Speckle.ProxyGenerator.Proxy",
-                ArgumentList = "typeof(ClientContext)" // Only name, no namespace
+                ArgumentList =new [] {  "typeof(Microsoft.SharePoint.Client.ClientContext)", "ImplementationOptions.UseExtendedInterfaces"} // Only name, no namespace
             }
         };
 

@@ -11,6 +11,7 @@ namespace Speckle.ProxyGenerator.FileGenerators;
 
 internal abstract class BaseGenerator
 {
+    protected const string globalPrefix = "global::";
     protected readonly Context Context;
     protected readonly bool SupportsNullable;
 
@@ -35,6 +36,11 @@ internal abstract class BaseGenerator
         [NotNullWhen(true)] out ProxyData? proxyData
     )
     {
+        proxyData = Context.Candidates.Values.FirstOrDefault(x => x.FullQualifiedMappedTypeName == type);
+        if (proxyData is not null)
+        {
+            return true;
+        }
         proxyData = Context.Candidates.Values.FirstOrDefault(x => x.FullQualifiedTypeName == type);
         return proxyData != null;
     }
@@ -214,7 +220,6 @@ internal abstract class BaseGenerator
     )
     {
         classSymbol = default;
-        const string globalPrefix = "global::";
         if (name.StartsWith(globalPrefix, StringComparison.Ordinal))
         {
             name = name.Substring(globalPrefix.Length);
@@ -283,8 +288,7 @@ internal abstract class BaseGenerator
     }
 
     protected IReadOnlyList<ProxyData> GetExtendsProxyData(
-        ProxyData proxyData,
-        ClassSymbol targetClassSymbol
+        ClassSymbol targetClassSymbol, bool useFullQualifiedMappedTypeName
     )
     {
         var extendsProxyClasses = new List<ProxyData>();
@@ -293,10 +297,22 @@ internal abstract class BaseGenerator
             var candidate = Context.Candidates.Values.FirstOrDefault(ci =>
                 ci.FullQualifiedTypeName == baseType.ToFullyQualifiedDisplayString()
             );
-            if (candidate is not null)
+            if (useFullQualifiedMappedTypeName)
             {
-                extendsProxyClasses.Add(candidate);
-                break;
+                //is a candidate and overrides
+                if (candidate?.FullQualifiedMappedTypeName != null)
+                {
+                    extendsProxyClasses.Add(candidate);
+                    break;
+                }
+            }
+            else
+            {
+                if (candidate != null)
+                {
+                    extendsProxyClasses.Add(candidate);
+                    break;
+                }
             }
         }
         return extendsProxyClasses;
