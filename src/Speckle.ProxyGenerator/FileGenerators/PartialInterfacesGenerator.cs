@@ -82,7 +82,7 @@ internal class PartialInterfacesGenerator : BaseGenerator, IFilesGenerator
     )
     {
         _implementedInterfaces.Clear();
-        var extendsProxyClasses = GetExtendsProxyData(proxyData, classSymbol);
+        var extendsProxyClasses = GetExtendsProxyData(classSymbol);
         _implementedInterfaces.AddRange(classSymbol.Symbol.ResolveImplementedInterfaces(
             proxyData.Options.HasFlag(ImplementationOptions.ProxyBaseClasses),
             proxyData.Options.HasFlag(ImplementationOptions.ProxyInterfaces)

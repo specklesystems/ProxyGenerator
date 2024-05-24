@@ -288,7 +288,6 @@ internal abstract class BaseGenerator
     }
 
     protected IReadOnlyList<ProxyData> GetExtendsProxyData(
-        ProxyData proxyData,
         ClassSymbol targetClassSymbol
     )
     {
@@ -298,7 +297,8 @@ internal abstract class BaseGenerator
             var candidate = Context.Candidates.Values.FirstOrDefault(ci =>
                 ci.FullQualifiedTypeName == baseType.ToFullyQualifiedDisplayString()
             );
-            if (candidate is not null)
+            //is a candidate and overrides
+            if (candidate?.FullQualifiedMappedTypeName != null)
             {
                 extendsProxyClasses.Add(candidate);
                 break;
