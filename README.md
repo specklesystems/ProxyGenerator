@@ -31,15 +31,15 @@ It supports:
 
 ## Install
 
-[![NuGet Badge](https://buildstats.info/nuget/ProxyInterfaceGenerator)](https://www.nuget.org/packages/ProxyInterfaceGenerator)
+[![NuGet Badge](https://buildstats.info/nuget/Speckle.ProxyGenerator)](https://www.nuget.org/packages/Speckle.ProxyGenerator)
 
 You can install from NuGet using the following command in the package manager window:
 
-`Install-Package ProxyInterfaceGenerator`
+`Install-Package Speckle.ProxyGenerator`
 
 Or via the Visual Studio NuGet package manager or if you use the `dotnet` command:
 
-`dotnet add package ProxyInterfaceGenerator`
+`dotnet add package Speckle.ProxyGenerator`
 
 ## Usage
 

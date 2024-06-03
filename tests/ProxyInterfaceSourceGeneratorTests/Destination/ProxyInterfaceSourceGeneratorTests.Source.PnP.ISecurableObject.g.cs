@@ -14,7 +14,7 @@ namespace ProxyInterfaceSourceGeneratorTests.Source.PnP
 {
     public partial interface ISecurableObject : global::ProxyInterfaceSourceGeneratorTests.Source.PnP.IClientObject
     {
-        new global::Microsoft.SharePoint.Client.SecurableObject _Instance { get; }
+        global::Microsoft.SharePoint.Client.SecurableObject _Instance { get; }
 
         [Microsoft.SharePoint.Client.RemoteAttribute]
         global::ProxyInterfaceSourceGeneratorTests.Source.PnP.ISecurableObject FirstUniqueAncestorSecurableObject { get; }

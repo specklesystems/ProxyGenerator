@@ -69,6 +69,13 @@
         <Compile Update="Source\Foo3.cs">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Compile>
+        <Compile Update="Source\Disposable\IRevitLocationPointProxy.cs">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Compile>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Destination\Disposable\" />
     </ItemGroup>
 
 </Project>

@@ -300,11 +300,6 @@ internal abstract class BaseGenerator
             if (useFullQualifiedMappedTypeName)
             {
                 //is a candidate and overrides
-                if (candidate?.FullQualifiedMappedTypeName != null)
-                {
-                    extendsProxyClasses.Add(candidate);
-                    break;
-                }
             }
             else
             {

@@ -107,6 +107,39 @@ public class InheritedInterfaceTests
     }
 
     [Fact]
+    public void GenerateFiles_InheritedInterface_Should_InheritTheInterfaceAndNotNew()
+    {
+        var className1 = "LocationPoint";
+        var interfaceName1 = "IRevitLocationPointProxy";
+        var proxyName1 =  $"{className1}Proxy";
+
+        // Arrange
+        var path1 = $"./Source/Disposable/{interfaceName1}.cs";
+
+        var sourceFile1 = CreateSourceFile(path1, className1, ImplementationOptions.ProxyForBaseInterface | ImplementationOptions.UseExtendedInterfaces);
+        var className2 = "Location";
+        var interfaceName2 = "IRevitLocationProxy";
+        var proxyName2 =  $"{className2}Proxy";
+
+        // Arrange
+        var path2 = $"./Source/Disposable/{interfaceName2}.cs";
+        var sourceFile2 = CreateSourceFile(path2, className2, ImplementationOptions.ProxyForBaseInterface | ImplementationOptions.UseExtendedInterfaces);
+
+        // Act
+        var result = _sut.Execute([sourceFile1, sourceFile2]);
+        string[] fileNames = [$"{Namespace}.{interfaceName1}.g.cs", $"{Namespace}.{proxyName1}.g.cs",
+            $"{Namespace}.{interfaceName2}.g.cs", $"{Namespace}.{proxyName2}.g.cs"];
+
+        result.Valid.Should().BeTrue();
+        result.Files.Should().HaveCount(fileNames.Length + 1);
+
+        foreach (var fileName in fileNames.Select((fileName, index) => new { fileName, index }))
+        {
+            var builder = result.Files[fileName.index + 1]; // +1 means skip the attribute
+            File.WriteAllText($"{OutputPath}{fileName.fileName}", builder.Text);
+        }
+    }
+    [Fact]
     public void GenerateFiles_InheritedInterface_Should_Not_InheritExplicitImplementedInterfaces()
     {
         var name = "Explicit";
@@ -145,7 +178,7 @@ public class InheritedInterfaceTests
         var o = string.Empty;
         foreach (var val in Enum.GetValues<ImplementationOptions>())
         {
-            if (!options.HasFlag(val))
+            if (val == ImplementationOptions.None || !options.HasFlag(val))
             {
                 continue;
             }
@@ -154,7 +187,7 @@ public class InheritedInterfaceTests
                 o += " | ";
             }
 
-            o += "ImplementationOptions." + val.ToString();
+            o += "ImplementationOptions." + val;
         }
         if (o.Length == 0)
         {
