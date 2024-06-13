@@ -12,8 +12,16 @@ namespace Speckle.ProxyGenerator.FileGenerators;
 
 internal partial class ProxyClassesGenerator : BaseGenerator, IFilesGenerator
 {
-    public ProxyClassesGenerator(Context context, bool supportsNullable)
-        : base(context, supportsNullable) { }
+    private readonly
+        List<ProxyMapItem> _proxyMapItems;
+
+    public ProxyClassesGenerator(
+        List<ProxyMapItem> proxyMapItems, Context context, bool supportsNullable)
+        : base(context, supportsNullable)
+    {
+        _proxyMapItems = proxyMapItems;
+
+    }
 
     public IEnumerable<FileData> GenerateFiles()
     {
@@ -55,9 +63,13 @@ internal partial class ProxyClassesGenerator : BaseGenerator, IFilesGenerator
         var constructorName = $"{targetClassSymbol.Symbol.Name}Proxy";
 
         var extendsProxyClasses = GetExtendsProxyData(targetClassSymbol, false);
-
+        var targetClass = targetClassSymbol.Symbol.GetFullMetadataName();
+        if (!targetClassSymbol.Symbol.IsGenericType)
+        {
+            _proxyMapItems.Add(new(targetClass, interfaceName, $"{pd.NamespaceDot}{className}"));
+        }
         fileData = new FileData(
-            $"{targetClassSymbol.Symbol.GetFullMetadataName()}Proxy.g.cs",
+            $"{targetClass}Proxy.g.cs",
             CreateProxyClassCode(
                 pd,
                 targetClassSymbol,

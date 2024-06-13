@@ -248,7 +248,7 @@ public class ProxyInterfaceSourceGeneratorTest
 
         foreach (var fileName in fileNames.Select((fileName, index) => new { fileName, index }))
         {
-            var builder = result.Files[fileName.index + 1]; // +1 means skip the attribute
+            var builder = result.Files[fileName.index]; // attribute is last
             builder.Path.Should().EndWith(fileName.fileName);
 
             if (Write)
@@ -288,7 +288,7 @@ public class ProxyInterfaceSourceGeneratorTest
 
         foreach (var fileName in fileNames.Select((fileName, index) => new { fileName, index }))
         {
-            var builder = result.Files[fileName.index + 1]; // +1 means skip the attribute
+            var builder = result.Files[fileName.index]; // attribute is last
             builder.Path.Should().EndWith(fileName.fileName);
 
             if (Write)
@@ -328,7 +328,7 @@ public class ProxyInterfaceSourceGeneratorTest
 
         foreach (var fileName in fileNames.Select((fileName, index) => new { fileName, index }))
         {
-            var builder = result.Files[fileName.index + 1]; // +1 means skip the attribute
+            var builder = result.Files[fileName.index ]; // attribute is last
             builder.Path.Should().EndWith(fileName.fileName);
 
             if (Write)
@@ -376,7 +376,7 @@ public class ProxyInterfaceSourceGeneratorTest
 
         foreach (var fileName in fileNames.Select((fileName, index) => new { fileName, index }))
         {
-            var builder = result.Files[fileName.index + 1]; // +1 means skip the attribute
+            var builder = result.Files[fileName.index]; // attribute is last
             builder.Path.Should().EndWith(fileName.fileName);
 
             if (Write)
@@ -416,7 +416,7 @@ public class ProxyInterfaceSourceGeneratorTest
 
         foreach (var fileName in fileNames.Select((fileName, index) => new { fileName, index }))
         {
-            var builder = result.Files[fileName.index + 1]; // +1 means skip the attribute
+            var builder = result.Files[fileName.index]; // attribute is last
             builder.Path.Should().EndWith(fileName.fileName);
 
             if (Write)
@@ -458,11 +458,11 @@ public class ProxyInterfaceSourceGeneratorTest
         result.Files.Should().HaveCount(3);
 
         // Assert attribute
-        var attribute = result.Files[0].SyntaxTree;
+        var attribute = result.Files.Last().SyntaxTree;
         attribute.FilePath.Should().EndWith(attributeFilename);
 
         // Assert interface
-        var @interface = result.Files[1].SyntaxTree;
+        var @interface = result.Files[0].SyntaxTree;
         @interface.FilePath.Should().EndWith(interfaceFilename);
 
         var interfaceCode = @interface.ToString();
@@ -474,7 +474,7 @@ public class ProxyInterfaceSourceGeneratorTest
             .And.Be(File.ReadAllText($"../../../Destination/{interfaceFilename}"));
 
         // Assert Proxy
-        var proxyClass = result.Files[2].SyntaxTree;
+        var proxyClass = result.Files[1].SyntaxTree;
         proxyClass.FilePath.Should().EndWith(proxyClassFilename);
 
         var proxyCode = proxyClass.ToString();
@@ -518,7 +518,7 @@ public class ProxyInterfaceSourceGeneratorTest
         result.Files.Should().HaveCount(3);
 
         // Assert interface
-        var @interface = result.Files[1].SyntaxTree;
+        var @interface = result.Files[0].SyntaxTree;
         @interface.FilePath.Should().EndWith(interfaceFilename);
 
         var interfaceCode = @interface.ToString();
@@ -530,7 +530,7 @@ public class ProxyInterfaceSourceGeneratorTest
             .And.Be(File.ReadAllText($"../../../Destination/{interfaceFilename}"));
 
         // Assert Proxy
-        var proxyClass = result.Files[2].SyntaxTree;
+        var proxyClass = result.Files[1].SyntaxTree;
         proxyClass.FilePath.Should().EndWith(proxyClassFilename);
 
         var proxyCode = proxyClass.ToString();
@@ -584,11 +584,11 @@ public class ProxyInterfaceSourceGeneratorTest
         result.Files.Should().HaveCount(5);
 
         // Assert attribute
-        var attribute = result.Files[0].SyntaxTree;
+        var attribute = result.Files.Last().SyntaxTree;
         attribute.FilePath.Should().EndWith(attributeFilename);
 
         // Assert interface Human
-        var interfaceHuman = result.Files[1].SyntaxTree;
+        var interfaceHuman = result.Files[0].SyntaxTree;
         interfaceHuman.FilePath.Should().EndWith(interfaceHumanFilename);
 
         var interfaceCodeHuman = interfaceHuman.ToString();
@@ -600,7 +600,7 @@ public class ProxyInterfaceSourceGeneratorTest
             .And.Be(File.ReadAllText($"../../../Destination/{interfaceHumanFilename}"));
 
         // Assert interface Person
-        var interfacePerson = result.Files[2].SyntaxTree;
+        var interfacePerson = result.Files[1].SyntaxTree;
         interfacePerson.FilePath.Should().EndWith(interfacePersonFilename);
 
         var interfaceCodePerson = interfacePerson.ToString();
@@ -690,11 +690,11 @@ public class ProxyInterfaceSourceGeneratorTest
         result.Files.Should().HaveCount(5);
 
         // Assert attribute
-        var attribute = result.Files[0].SyntaxTree;
+        var attribute = result.Files.Last().SyntaxTree;
         attribute.FilePath.Should().EndWith(attributeFilename);
 
         // Assert interface IHttpClient
-        var interfaceIHttpClient = result.Files[1].SyntaxTree;
+        var interfaceIHttpClient = result.Files[0].SyntaxTree;
         interfaceIHttpClient.FilePath.Should().EndWith(interfaceIHttpClientFilename);
 
         var interfaceCodeIHttpClient = interfaceIHttpClient.ToString();
@@ -709,7 +709,7 @@ public class ProxyInterfaceSourceGeneratorTest
             .And.Be(File.ReadAllText($"../../../Destination/{interfaceIHttpClientFilename}"));
 
         // Assert interface IHttpMessageInvoker
-        var interfaceIMessageInvoker = result.Files[2].SyntaxTree;
+        var interfaceIMessageInvoker = result.Files[1].SyntaxTree;
         interfaceIMessageInvoker.FilePath.Should().EndWith(interfaceIHttpMessageInvokerFilename);
 
         var interfaceCodeIMessageInvoker = interfaceIMessageInvoker.ToString();
@@ -795,11 +795,11 @@ public class ProxyInterfaceSourceGeneratorTest
             result.Files.Should().HaveCount(3);
 
             // Assert attribute
-            var attribute = result.Files[0].SyntaxTree;
+            var attribute = result.Files.Last().SyntaxTree;
             attribute.FilePath.Should().EndWith(attributeFilename);
 
             // Assert interface
-            var @interface = result.Files[1].SyntaxTree;
+            var @interface = result.Files[0].SyntaxTree;
             @interface.FilePath.Should().EndWith(interfaceFilename);
 
             var interfaceCode = @interface.ToString();
@@ -811,7 +811,7 @@ public class ProxyInterfaceSourceGeneratorTest
                 .And.Be(File.ReadAllText($"../../../Destination/{interfaceFilename}"));
 
             // Assert Proxy
-            var proxyClass = result.Files[2].SyntaxTree;
+            var proxyClass = result.Files[1].SyntaxTree;
             proxyClass.FilePath.Should().EndWith(proxyClassFilename);
 
             var proxyCode = proxyClass.ToString();

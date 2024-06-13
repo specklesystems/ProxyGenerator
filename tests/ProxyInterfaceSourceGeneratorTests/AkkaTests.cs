@@ -48,7 +48,7 @@ public class AkkaTests
 
         foreach (var fileName in fileNames.Select((fileName, index) => new { fileName, index }))
         {
-            var builder = result.Files[fileName.index + 1]; // +1 means skip the attribute
+            var builder = result.Files[fileName.index]; // attribute is last
             builder.Path.Should().EndWith(fileName.fileName);
 
             if (Write)

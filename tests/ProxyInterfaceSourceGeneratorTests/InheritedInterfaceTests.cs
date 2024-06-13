@@ -58,7 +58,7 @@ public class InheritedInterfaceTests
         result.Files.Should().HaveCount(fileNames.Length + 1);
         WriteFiles(fileNames, result);
 
-        var interfaceIndex = 1;
+        var interfaceIndex = 0;
         var tree = result.Files[interfaceIndex].SyntaxTree;
         var root = tree.GetRoot();
         var interfaceDeclarations = root.DescendantNodes().OfType<InterfaceDeclarationSyntax>();
@@ -91,7 +91,7 @@ public class InheritedInterfaceTests
         result.Files.Should().HaveCount(fileNames.Length + 1);
         WriteFiles(fileNames, result);
 
-        var interfaceIndex = 1;
+        var interfaceIndex = 0;
         var tree = result.Files[interfaceIndex].SyntaxTree;
         var root = tree.GetRoot();
         var interfaceDeclarations = root.DescendantNodes().OfType<InterfaceDeclarationSyntax>();
@@ -148,7 +148,6 @@ public class InheritedInterfaceTests
 
         // Arrange
         string[] fileNames = [$"{Namespace}.{interfaceName}.g.cs", $"{Namespace}.{proxyName}.g.cs"];
-        var interfaceIndex = 1;
         var path = $"./Source/Disposable/{interfaceName}.cs";
         SourceFile sourceFile = CreateSourceFile(path, name, ImplementationOptions.UseExtendedInterfaces);
 
@@ -159,6 +158,7 @@ public class InheritedInterfaceTests
         result.Files.Should().HaveCount(fileNames.Length + 1);
         WriteFiles(fileNames, result);
 
+        var interfaceIndex = 0;
         var tree = result.Files[interfaceIndex].SyntaxTree;
         var root = tree.GetRoot();
         var interfaceDeclarations = root.DescendantNodes().OfType<InterfaceDeclarationSyntax>();
@@ -209,10 +209,11 @@ public class InheritedInterfaceTests
     {
         foreach (var fileName in fileNames.Select((fileName, index) => new { fileName, index }))
         {
-            var builder = result.Files[fileName.index + 1]; // +1 means skip the attribute
+            var builder = result.Files[fileName.index]; // attribute is always last
             builder.Path.Should().EndWith(fileName.fileName);
             File.WriteAllText($"{OutputPath}{fileName.fileName}", builder.Text);
             builder.Text.Should().Be(File.ReadAllText($"{OutputPath}{fileName.fileName}"));
         }
     }
 }
+

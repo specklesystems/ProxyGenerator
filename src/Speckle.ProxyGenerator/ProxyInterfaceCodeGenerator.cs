@@ -48,9 +48,10 @@ class ProxyInterfaceCodeGenerator : ISourceGenerator
             // https://github.com/reactiveui/refit/blob/main/InterfaceStubGenerator.Core/InterfaceStubGenerator.cs
             var supportsNullable = csharpParseOptions.LanguageVersion >= LanguageVersion.CSharp8;
 
-            GenerateProxyAttribute(context, receiver, supportsNullable);
+            var proxyItems = new List<ProxyMapItem>();
             GeneratePartialInterfaces(context, receiver, supportsNullable);
-            GenerateProxyClasses(context, receiver, supportsNullable);
+            GenerateProxyClasses(proxyItems, context, receiver, supportsNullable);
+            GenerateProxyAttribute(proxyItems, context, receiver, supportsNullable);
         }
         catch (Exception exception)
         {
@@ -66,6 +67,7 @@ class ProxyInterfaceCodeGenerator : ISourceGenerator
     }
 
     private void GenerateProxyAttribute(
+        List<ProxyMapItem> proxyMapItems,
         GeneratorExecutionContext ctx,
         ProxySyntaxReceiver receiver,
         bool supportsNullable
@@ -77,7 +79,7 @@ class ProxyInterfaceCodeGenerator : ISourceGenerator
             Candidates = receiver.CandidateInterfaces
         };
 
-        var attributeData = _proxyAttributeGenerator.GenerateFile(supportsNullable);
+        var attributeData = _proxyAttributeGenerator.GenerateFile(proxyMapItems, supportsNullable);
         context.GeneratorExecutionContext.AddSource(
             attributeData.FileName,
             SourceText.From(attributeData.Text, Encoding.UTF8)
@@ -107,6 +109,7 @@ class ProxyInterfaceCodeGenerator : ISourceGenerator
     }
 
     private static void GenerateProxyClasses(
+        List<ProxyMapItem> proxyMapItems,
         GeneratorExecutionContext ctx,
         ProxySyntaxReceiver receiver,
         bool supportsNullable
@@ -118,7 +121,7 @@ class ProxyInterfaceCodeGenerator : ISourceGenerator
             Candidates = receiver.CandidateInterfaces
         };
 
-        var proxyClassesGenerator = new ProxyClassesGenerator(context, supportsNullable);
+        var proxyClassesGenerator = new ProxyClassesGenerator(proxyMapItems, context, supportsNullable);
         foreach (var (fileName, text) in proxyClassesGenerator.GenerateFiles())
         {
             context.GeneratorExecutionContext.AddSource(
