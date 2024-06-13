@@ -4,5 +4,5 @@ namespace Speckle.ProxyGenerator.FileGenerators;
 
 internal interface IFileGenerator
 {
-    FileData GenerateFile(bool supportsNullable);
+    FileData GenerateFile(List<ProxyMapItem> proxyMapItems, bool supportsNullable);
 }

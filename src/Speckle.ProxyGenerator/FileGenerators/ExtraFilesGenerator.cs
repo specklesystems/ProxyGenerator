@@ -1,14 +1,22 @@
+using System.Text;
 using Speckle.ProxyGenerator.Extensions;
 using Speckle.ProxyGenerator.Models;
 
 namespace Speckle.ProxyGenerator.FileGenerators;
 
+internal record ProxyMapItem(string BaseType, string InterfaceType, string ProxyType);
 internal class ExtraFilesGenerator : IFileGenerator
 {
     private const string Name = "Speckle.ProxyGenerator.Extra.g.cs";
 
-    public FileData GenerateFile(bool supportsNullable)
+    public FileData GenerateFile(List<ProxyMapItem> proxyMapItems, bool supportsNullable)
     {
+        var sb = new StringBuilder();
+        foreach (var item in proxyMapItems)
+        {
+            sb.AppendLine(
+                $"Add<{item.BaseType}, {item.InterfaceType}, {item.ProxyType}>(x => new {item.ProxyType}(x));");
+        }
         return new FileData(
             $"{Name}",
             $@"//----------------------------------------------------------------------------------------
@@ -85,6 +93,62 @@ namespace Speckle.ProxyGenerator
         UseExtendedInterfaces = 4,
 
         ProxyForBaseInterface = 8
+    }}
+
+    public static class ProxyMap
+    {{
+      private static readonly global::System.Collections.Concurrent.ConcurrentDictionary<Type, Type> s_revitToInterfaceMap = new();
+      private static readonly global::System.Collections.Concurrent.ConcurrentDictionary<Type, Type> s_proxyToInterfaceMap = new();
+      private static readonly global::System.Collections.Concurrent.ConcurrentDictionary<Type, Type> s_interfaceToRevit = new();
+      private static readonly global::System.Collections.Concurrent.ConcurrentDictionary<Type, Func<object, object>> s_proxyFactory = new();
+
+      static ProxyMap()
+      {{
+        {sb}
+      }}
+
+      private static void Add<T, TInterface, TProxy>(Func<T, TProxy> f)
+        where T : class
+        where TInterface : notnull
+        where TProxy : TInterface
+      {{
+        s_revitToInterfaceMap.TryAdd(typeof(T), typeof(TInterface));
+        s_proxyToInterfaceMap.TryAdd(typeof(TProxy), typeof(TInterface));
+        s_proxyFactory.TryAdd(typeof(TInterface), w => f((T)w));
+        s_interfaceToRevit.TryAdd(typeof(TInterface), typeof(T));
+      }}
+
+      public static Type? GetMappedTypeFromHostType(Type type)
+      {{
+        if (s_revitToInterfaceMap.TryGetValue(type, out var t))
+        {{
+          return t;
+        }}
+        return null;
+      }}
+
+      public static Type? GetMappedTypeFromProxyType(Type type)
+      {{
+        if (s_proxyToInterfaceMap.TryGetValue(type, out var t))
+        {{
+          return t;
+        }}
+
+        return null;
+      }}
+
+      public static Type? GetHostTypeFromMappedType(Type type)
+      {{
+        if (s_interfaceToRevit.TryGetValue(type, out var t))
+        {{
+          return t;
+        }}
+
+        return null;
+      }}
+
+      public static object CreateProxy(Type type, object toWrap) => s_proxyFactory[type](toWrap);
+      public static T CreateProxy<T>(object toWrap) => (T)CreateProxy(typeof(T), toWrap);
     }}
 {supportsNullable.IIf("#nullable restore")}
 }}"
