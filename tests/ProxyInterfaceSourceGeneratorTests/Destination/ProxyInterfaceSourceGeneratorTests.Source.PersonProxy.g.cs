@@ -172,12 +172,14 @@ namespace ProxyInterfaceSourceGeneratorTests.Source
         {
             _Instance = instance;
             _InstanceHuman = instance;
+        }
 
+        static PersonProxy()
+        {
             Mapster.TypeAdapterConfig<global::ProxyInterfaceSourceGeneratorTests.Source.Human, global::ProxyInterfaceSourceGeneratorTests.Source.IHuman>.NewConfig().ConstructUsing(instance2145588841 => new global::ProxyInterfaceSourceGeneratorTests.Source.HumanProxy(instance2145588841));
             Mapster.TypeAdapterConfig<global::ProxyInterfaceSourceGeneratorTests.Source.IHuman, global::ProxyInterfaceSourceGeneratorTests.Source.Human>.NewConfig().MapWith(proxy1567394325 => ((global::ProxyInterfaceSourceGeneratorTests.Source.HumanProxy) proxy1567394325)._Instance);
-
-
         }
+            
     }
 }
 #nullable restore

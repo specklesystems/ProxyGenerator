@@ -83,15 +83,17 @@ namespace ProxyInterfaceSourceGeneratorTests.Source.PnP
         {
             _Instance = instance;
             
+        }
 
+        static ClientObjectProxy()
+        {
             Mapster.TypeAdapterConfig<global::Microsoft.SharePoint.Client.ClientRuntimeContext, global::ProxyInterfaceSourceGeneratorTests.Source.PnP.IClientRuntimeContext>.NewConfig().ConstructUsing(instance_572349648 => new global::ProxyInterfaceSourceGeneratorTests.Source.PnP.ClientRuntimeContextProxy(instance_572349648));
             Mapster.TypeAdapterConfig<global::ProxyInterfaceSourceGeneratorTests.Source.PnP.IClientRuntimeContext, global::Microsoft.SharePoint.Client.ClientRuntimeContext>.NewConfig().MapWith(proxy214349770 => ((global::ProxyInterfaceSourceGeneratorTests.Source.PnP.ClientRuntimeContextProxy) proxy214349770)._Instance);
 
             Mapster.TypeAdapterConfig<global::Microsoft.SharePoint.Client.ClientObject, global::ProxyInterfaceSourceGeneratorTests.Source.PnP.IClientObject>.NewConfig().ConstructUsing(instance_205438316 => new global::ProxyInterfaceSourceGeneratorTests.Source.PnP.ClientObjectProxy(instance_205438316));
             Mapster.TypeAdapterConfig<global::ProxyInterfaceSourceGeneratorTests.Source.PnP.IClientObject, global::Microsoft.SharePoint.Client.ClientObject>.NewConfig().MapWith(proxy_437526006 => ((global::ProxyInterfaceSourceGeneratorTests.Source.PnP.ClientObjectProxy) proxy_437526006)._Instance);
-
-
         }
+            
     }
 }
 #nullable restore

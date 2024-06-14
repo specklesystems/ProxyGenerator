@@ -130,9 +130,8 @@ namespace ProxyInterfaceSourceGeneratorTests.Source.AkkaActor
         {
             _Instance = instance;
             
-
-
         }
+
     }
 }
 #nullable restore

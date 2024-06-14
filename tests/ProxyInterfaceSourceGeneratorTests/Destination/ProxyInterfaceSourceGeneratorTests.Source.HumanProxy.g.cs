@@ -30,9 +30,8 @@ namespace ProxyInterfaceSourceGeneratorTests.Source
         {
             _Instance = instance;
             
-
-
         }
+
     }
 }
 #nullable restore

@@ -394,9 +394,8 @@ namespace ProxyInterfaceSourceGeneratorTests.Source
         {
             _Instance = instance;
             _InstanceHttpMessageInvoker = instance;
-
-
         }
+
     }
 }
 #nullable restore

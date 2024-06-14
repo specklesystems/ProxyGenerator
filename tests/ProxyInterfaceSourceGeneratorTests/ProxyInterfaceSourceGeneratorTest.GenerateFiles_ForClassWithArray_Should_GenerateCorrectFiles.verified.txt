@@ -61,12 +61,14 @@ namespace ProxyInterfaceSourceGeneratorTests.Source
         {
             _Instance = instance;
             
+        }
 
+        static FooProxy()
+        {
             Mapster.TypeAdapterConfig<global::ProxyInterfaceSourceGeneratorTests.Source.Foo, global::ProxyInterfaceSourceGeneratorTests.Source.IFoo>.NewConfig().ConstructUsing(instance2058774601 => new global::ProxyInterfaceSourceGeneratorTests.Source.FooProxy(instance2058774601));
             Mapster.TypeAdapterConfig<global::ProxyInterfaceSourceGeneratorTests.Source.IFoo, global::ProxyInterfaceSourceGeneratorTests.Source.Foo>.NewConfig().MapWith(proxy1662609081 => ((global::ProxyInterfaceSourceGeneratorTests.Source.FooProxy) proxy1662609081)._Instance);
-
-
         }
+            
     }
 }
 #nullable restore
@@ -150,16 +152,7 @@ namespace Speckle.ProxyGenerator
         ProxyForBaseInterface = 8
     }
 
-    public interface IProxyMap
-    {
-      Type? GetMappedTypeFromHostType(Type type);
-      Type? GetMappedTypeFromProxyType(Type type);
-      Type? GetHostTypeFromMappedType(Type type);
-
-      object CreateProxy(Type type, object toWrap);
-    }
-
-    public class ProxyMap : IProxyMap
+    public static class ProxyMap
     {
       private static readonly global::System.Collections.Concurrent.ConcurrentDictionary<Type, Type> s_revitToInterfaceMap = new();
       private static readonly global::System.Collections.Concurrent.ConcurrentDictionary<Type, Type> s_proxyToInterfaceMap = new();
@@ -183,7 +176,7 @@ namespace Speckle.ProxyGenerator
         s_interfaceToRevit.TryAdd(typeof(TInterface), typeof(T));
       }
 
-      public Type? GetMappedTypeFromHostType(Type type)
+      public static Type? GetMappedTypeFromHostType(Type type)
       {
         if (s_revitToInterfaceMap.TryGetValue(type, out var t))
         {
@@ -192,7 +185,7 @@ namespace Speckle.ProxyGenerator
         return null;
       }
 
-      public Type? GetMappedTypeFromProxyType(Type type)
+      public static Type? GetMappedTypeFromProxyType(Type type)
       {
         if (s_proxyToInterfaceMap.TryGetValue(type, out var t))
         {
@@ -202,7 +195,7 @@ namespace Speckle.ProxyGenerator
         return null;
       }
 
-      public Type? GetHostTypeFromMappedType(Type type)
+      public static Type? GetHostTypeFromMappedType(Type type)
       {
         if (s_interfaceToRevit.TryGetValue(type, out var t))
         {
@@ -212,7 +205,8 @@ namespace Speckle.ProxyGenerator
         return null;
       }
 
-      public object CreateProxy(Type type, object toWrap) => s_proxyFactory[type](toWrap);
+      public static object CreateProxy(Type type, object toWrap) => s_proxyFactory[type](toWrap);
+      public static T CreateProxy<T>(object toWrap) => (T)CreateProxy(typeof(T), toWrap);
     }
 #nullable restore
 }

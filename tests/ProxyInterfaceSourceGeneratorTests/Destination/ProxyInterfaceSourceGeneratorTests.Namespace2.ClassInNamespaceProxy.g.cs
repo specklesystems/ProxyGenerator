@@ -21,9 +21,8 @@ namespace ProxyInterfaceSourceGeneratorTests.Namespace2
         {
             _Instance = instance;
             
-
-
         }
+
     }
 }
 #nullable restore
