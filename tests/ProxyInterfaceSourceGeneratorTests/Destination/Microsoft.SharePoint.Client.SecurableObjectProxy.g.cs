@@ -44,7 +44,10 @@ namespace ProxyInterfaceSourceGeneratorTests.Source.PnP
         {
             _Instance = instance;
             _InstanceClientObject = instance;
+        }
 
+        static SecurableObjectProxy()
+        {
             Mapster.TypeAdapterConfig<global::Microsoft.SharePoint.Client.ClientRuntimeContext, global::ProxyInterfaceSourceGeneratorTests.Source.PnP.IClientRuntimeContext>.NewConfig().ConstructUsing(instance_572349648 => new global::ProxyInterfaceSourceGeneratorTests.Source.PnP.ClientRuntimeContextProxy(instance_572349648));
             Mapster.TypeAdapterConfig<global::ProxyInterfaceSourceGeneratorTests.Source.PnP.IClientRuntimeContext, global::Microsoft.SharePoint.Client.ClientRuntimeContext>.NewConfig().MapWith(proxy214349770 => ((global::ProxyInterfaceSourceGeneratorTests.Source.PnP.ClientRuntimeContextProxy) proxy214349770)._Instance);
 
@@ -53,9 +56,8 @@ namespace ProxyInterfaceSourceGeneratorTests.Source.PnP
 
             Mapster.TypeAdapterConfig<global::Microsoft.SharePoint.Client.SecurableObject, global::ProxyInterfaceSourceGeneratorTests.Source.PnP.ISecurableObject>.NewConfig().ConstructUsing(instance_247129254 => new global::ProxyInterfaceSourceGeneratorTests.Source.PnP.SecurableObjectProxy(instance_247129254));
             Mapster.TypeAdapterConfig<global::ProxyInterfaceSourceGeneratorTests.Source.PnP.ISecurableObject, global::Microsoft.SharePoint.Client.SecurableObject>.NewConfig().MapWith(proxy_117192422 => ((global::ProxyInterfaceSourceGeneratorTests.Source.PnP.SecurableObjectProxy) proxy_117192422)._Instance);
-
-
         }
+            
     }
 }
 #nullable restore

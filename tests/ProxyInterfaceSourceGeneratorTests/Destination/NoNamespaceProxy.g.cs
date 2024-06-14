@@ -22,9 +22,8 @@ using System;
         {
             _Instance = instance;
             
-
-
         }
+
     }
 
 #nullable restore

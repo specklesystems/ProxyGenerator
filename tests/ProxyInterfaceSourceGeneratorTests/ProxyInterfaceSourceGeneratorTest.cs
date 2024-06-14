@@ -615,7 +615,7 @@ public class ProxyInterfaceSourceGeneratorTest
             .And.Be(File.ReadAllText($"../../../Destination/{interfacePersonFilename}"));
 
         // Assert Proxy Human
-        var proxyClassHuman = result.Files[3].SyntaxTree;
+        var proxyClassHuman = result.Files[2].SyntaxTree;
         proxyClassHuman.FilePath.Should().EndWith(proxyClassHumanFilename);
 
         var proxyCodeHuman = proxyClassHuman.ToString();
@@ -627,7 +627,7 @@ public class ProxyInterfaceSourceGeneratorTest
             .And.Be(File.ReadAllText($"../../../Destination/{proxyClassHumanFilename}"));
 
         // Assert Proxy Person
-        var proxyClassPerson = result.Files[4].SyntaxTree;
+        var proxyClassPerson = result.Files[3].SyntaxTree;
         proxyClassPerson.FilePath.Should().EndWith(proxyClassPersonFilename);
 
         var proxyCode = proxyClassPerson.ToString();
@@ -726,7 +726,7 @@ public class ProxyInterfaceSourceGeneratorTest
             );
 
         // Assert Proxy IHttpClient
-        var proxyClassIHttpClient = result.Files[3].SyntaxTree;
+        var proxyClassIHttpClient = result.Files[2].SyntaxTree;
         proxyClassIHttpClient.FilePath.Should().EndWith(proxyClassIHttpClientFilename);
 
         var proxyCodeIHttpClient = proxyClassIHttpClient.ToString();
@@ -741,7 +741,7 @@ public class ProxyInterfaceSourceGeneratorTest
             .And.Be(File.ReadAllText($"../../../Destination/{proxyClassIHttpClientFilename}"));
 
         // Assert Proxy IHttpMessageInvoker
-        var proxyClassIMessageInvoker = result.Files[4].SyntaxTree;
+        var proxyClassIMessageInvoker = result.Files[3].SyntaxTree;
         proxyClassIMessageInvoker.FilePath.Should().EndWith(proxyClassIHttpMessageInvokerFilename);
 
         var proxyIMessageInvoker = proxyClassIMessageInvoker.ToString();

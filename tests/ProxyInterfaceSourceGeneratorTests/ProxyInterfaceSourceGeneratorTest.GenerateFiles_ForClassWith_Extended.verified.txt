@@ -83,12 +83,14 @@ namespace ProxyInterfaceSourceGeneratorTests.Source
         {
             _Instance = instance;
             
+        }
 
+        static Foo3Proxy()
+        {
             Mapster.TypeAdapterConfig<global::ProxyInterfaceSourceGeneratorTests.Source.Bar3, global::ProxyInterfaceSourceGeneratorTests.Source.IBar3>.NewConfig().ConstructUsing(instance969373361 => new global::ProxyInterfaceSourceGeneratorTests.Source.Bar3Proxy(instance969373361));
             Mapster.TypeAdapterConfig<global::ProxyInterfaceSourceGeneratorTests.Source.IBar3, global::ProxyInterfaceSourceGeneratorTests.Source.Bar3>.NewConfig().MapWith(proxy339001485 => ((global::ProxyInterfaceSourceGeneratorTests.Source.Bar3Proxy) proxy339001485)._Instance);
-
-
         }
+            
     }
 }
 #nullable restore
@@ -119,12 +121,14 @@ namespace ProxyInterfaceSourceGeneratorTests.Source
         {
             _Instance = instance;
             
+        }
 
+        static Bar3Proxy()
+        {
             Mapster.TypeAdapterConfig<global::ProxyInterfaceSourceGeneratorTests.Source.Bar3, global::ProxyInterfaceSourceGeneratorTests.Source.IBar3>.NewConfig().ConstructUsing(instance969373361 => new global::ProxyInterfaceSourceGeneratorTests.Source.Bar3Proxy(instance969373361));
             Mapster.TypeAdapterConfig<global::ProxyInterfaceSourceGeneratorTests.Source.IBar3, global::ProxyInterfaceSourceGeneratorTests.Source.Bar3>.NewConfig().MapWith(proxy339001485 => ((global::ProxyInterfaceSourceGeneratorTests.Source.Bar3Proxy) proxy339001485)._Instance);
-
-
         }
+            
     }
 }
 #nullable restore
@@ -208,16 +212,7 @@ namespace Speckle.ProxyGenerator
         ProxyForBaseInterface = 8
     }
 
-    public interface IProxyMap
-    {
-      Type? GetMappedTypeFromHostType(Type type);
-      Type? GetMappedTypeFromProxyType(Type type);
-      Type? GetHostTypeFromMappedType(Type type);
-
-      object CreateProxy(Type type, object toWrap);
-    }
-
-    public class ProxyMap : IProxyMap
+    public static class ProxyMap
     {
       private static readonly global::System.Collections.Concurrent.ConcurrentDictionary<Type, Type> s_revitToInterfaceMap = new();
       private static readonly global::System.Collections.Concurrent.ConcurrentDictionary<Type, Type> s_proxyToInterfaceMap = new();
@@ -242,7 +237,7 @@ Add<ProxyInterfaceSourceGeneratorTests.Source.Bar3, global::ProxyInterfaceSource
         s_interfaceToRevit.TryAdd(typeof(TInterface), typeof(T));
       }
 
-      public Type? GetMappedTypeFromHostType(Type type)
+      public static Type? GetMappedTypeFromHostType(Type type)
       {
         if (s_revitToInterfaceMap.TryGetValue(type, out var t))
         {
@@ -251,7 +246,7 @@ Add<ProxyInterfaceSourceGeneratorTests.Source.Bar3, global::ProxyInterfaceSource
         return null;
       }
 
-      public Type? GetMappedTypeFromProxyType(Type type)
+      public static Type? GetMappedTypeFromProxyType(Type type)
       {
         if (s_proxyToInterfaceMap.TryGetValue(type, out var t))
         {
@@ -261,7 +256,7 @@ Add<ProxyInterfaceSourceGeneratorTests.Source.Bar3, global::ProxyInterfaceSource
         return null;
       }
 
-      public Type? GetHostTypeFromMappedType(Type type)
+      public static Type? GetHostTypeFromMappedType(Type type)
       {
         if (s_interfaceToRevit.TryGetValue(type, out var t))
         {
@@ -271,7 +266,8 @@ Add<ProxyInterfaceSourceGeneratorTests.Source.Bar3, global::ProxyInterfaceSource
         return null;
       }
 
-      public object CreateProxy(Type type, object toWrap) => s_proxyFactory[type](toWrap);
+      public static object CreateProxy(Type type, object toWrap) => s_proxyFactory[type](toWrap);
+      public static T CreateProxy<T>(object toWrap) => (T)CreateProxy(typeof(T), toWrap);
     }
 #nullable restore
 }

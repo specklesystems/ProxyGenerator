@@ -119,7 +119,18 @@ internal partial class ProxyClassesGenerator : BaseGenerator, IFilesGenerator
         var configurationForMapster = string.Empty;
         if (Context.ReplacedTypes.Count > 0)
         {
-            configurationForMapster = GenerateMapperConfigurationForMapster();
+            configurationForMapster = GenerateMapperConfigurationForMapster().Trim();
+        }
+
+        var staticConstructor = string.Empty;
+        if (!string.IsNullOrWhiteSpace(configurationForMapster))
+        {
+            staticConstructor = $@"
+        static {constructorName}()
+        {{
+            {configurationForMapster}
+        }}
+            ";
         }
 
         var (namespaceStart, namespaceEnd) = NamespaceBuilder.Build(pd.Namespace);
@@ -152,9 +163,8 @@ operators}
         {{
             _Instance = instance;
             {instanceBaseSetter}
-
-{configurationForMapster}
         }}
+{staticConstructor}
     }}
 {namespaceEnd}
 {SupportsNullable.IIf("#nullable restore")}";

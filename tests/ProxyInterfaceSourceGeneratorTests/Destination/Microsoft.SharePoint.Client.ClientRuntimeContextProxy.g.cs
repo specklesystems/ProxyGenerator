@@ -141,7 +141,10 @@ namespace ProxyInterfaceSourceGeneratorTests.Source.PnP
         {
             _Instance = instance;
             
+        }
 
+        static ClientRuntimeContextProxy()
+        {
             Mapster.TypeAdapterConfig<global::Microsoft.SharePoint.Client.ClientRuntimeContext, global::ProxyInterfaceSourceGeneratorTests.Source.PnP.IClientRuntimeContext>.NewConfig().ConstructUsing(instance_572349648 => new global::ProxyInterfaceSourceGeneratorTests.Source.PnP.ClientRuntimeContextProxy(instance_572349648));
             Mapster.TypeAdapterConfig<global::ProxyInterfaceSourceGeneratorTests.Source.PnP.IClientRuntimeContext, global::Microsoft.SharePoint.Client.ClientRuntimeContext>.NewConfig().MapWith(proxy214349770 => ((global::ProxyInterfaceSourceGeneratorTests.Source.PnP.ClientRuntimeContextProxy) proxy214349770)._Instance);
 
@@ -153,9 +156,8 @@ namespace ProxyInterfaceSourceGeneratorTests.Source.PnP
 
             Mapster.TypeAdapterConfig<global::Microsoft.SharePoint.Client.ClientContext, global::ProxyInterfaceSourceGeneratorTests.Source.PnP.IClientContext>.NewConfig().ConstructUsing(instance_1483513702 => new global::ProxyInterfaceSourceGeneratorTests.Source.PnP.ClientContextProxy(instance_1483513702));
             Mapster.TypeAdapterConfig<global::ProxyInterfaceSourceGeneratorTests.Source.PnP.IClientContext, global::Microsoft.SharePoint.Client.ClientContext>.NewConfig().MapWith(proxy343311664 => ((global::ProxyInterfaceSourceGeneratorTests.Source.PnP.ClientContextProxy) proxy343311664)._Instance);
-
-
         }
+            
     }
 }
 #nullable restore
