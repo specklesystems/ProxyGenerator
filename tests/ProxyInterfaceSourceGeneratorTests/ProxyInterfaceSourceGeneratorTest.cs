@@ -147,7 +147,6 @@ public class ProxyInterfaceSourceGeneratorTest
         return Verify(results);
     }
 
-
     [Fact]
     public Task GenerateFiles_ForClassWith_BaseInterface()
     {
@@ -169,7 +168,8 @@ public class ProxyInterfaceSourceGeneratorTest
                 ArgumentList = new[]
                 {
                     "typeof(ProxyInterfaceSourceGeneratorTests.Source.Foo2)",
-                    "ImplementationOptions.UseExtendedInterfaces", "ProxyClassAccessibility.Public"
+                    "ImplementationOptions.UseExtendedInterfaces",
+                    "ProxyClassAccessibility.Public"
                 }
             }
         };
@@ -352,7 +352,7 @@ public class ProxyInterfaceSourceGeneratorTest
 
         foreach (var fileName in fileNames.Select((fileName, index) => new { fileName, index }))
         {
-            var builder = result.Files[fileName.index ]; // attribute is last
+            var builder = result.Files[fileName.index]; // attribute is last
             builder.Path.Should().EndWith(fileName.fileName);
 
             if (Write)

@@ -5,6 +5,7 @@ using Speckle.ProxyGenerator.Models;
 namespace Speckle.ProxyGenerator.FileGenerators;
 
 internal record ProxyMapItem(string BaseType, string InterfaceType, string ProxyType);
+
 internal class ExtraFilesGenerator : IFileGenerator
 {
     private const string Name = "Speckle.ProxyGenerator.Extra.g.cs";
@@ -15,7 +16,8 @@ internal class ExtraFilesGenerator : IFileGenerator
         foreach (var item in proxyMapItems)
         {
             sb.AppendLine(
-                $"Add<{item.BaseType}, {item.InterfaceType}, {item.ProxyType}>(x => new {item.ProxyType}(x));");
+                $"Add<{item.BaseType}, {item.InterfaceType}, {item.ProxyType}>(x => new {item.ProxyType}(x));"
+            );
         }
         return new FileData(
             $"{Name}",

@@ -13,9 +13,9 @@ internal enum ImplementationOptions
 {
     None = 0,
 
-   ProxyBaseClasses = 1,
+    ProxyBaseClasses = 1,
 
-   ProxyInterfaces = 2,
+    ProxyInterfaces = 2,
 
     UseExtendedInterfaces = 4,
 

@@ -36,7 +36,9 @@ internal abstract class BaseGenerator
         [NotNullWhen(true)] out ProxyData? proxyData
     )
     {
-        proxyData = Context.Candidates.Values.FirstOrDefault(x => x.FullQualifiedMappedTypeName == type);
+        proxyData = Context.Candidates.Values.FirstOrDefault(x =>
+            x.FullQualifiedMappedTypeName == type
+        );
         if (proxyData is not null)
         {
             return true;
@@ -288,7 +290,8 @@ internal abstract class BaseGenerator
     }
 
     protected IReadOnlyList<ProxyData> GetExtendsProxyData(
-        ClassSymbol targetClassSymbol, bool useFullQualifiedMappedTypeName
+        ClassSymbol targetClassSymbol,
+        bool useFullQualifiedMappedTypeName
     )
     {
         var extendsProxyClasses = new List<ProxyData>();

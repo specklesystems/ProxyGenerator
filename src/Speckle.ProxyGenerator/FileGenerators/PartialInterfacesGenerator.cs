@@ -67,7 +67,13 @@ internal class PartialInterfacesGenerator : BaseGenerator, IFilesGenerator
 
         fileData = new FileData(
             $"{sourceInterfaceSymbol.Symbol.GetFullMetadataName()}.g.cs",
-            CreatePartialInterfaceCode(pd.Namespace, targetClassSymbol, sourceInterfaceSymbol,interfaceName, pd)
+            CreatePartialInterfaceCode(
+                pd.Namespace,
+                targetClassSymbol,
+                sourceInterfaceSymbol,
+                interfaceName,
+                pd
+            )
         );
 
         return true;
@@ -82,16 +88,24 @@ internal class PartialInterfacesGenerator : BaseGenerator, IFilesGenerator
     )
     {
         _implementedInterfaces.Clear();
-        _implementedInterfaces.AddRange(classSymbol.Symbol.ResolveImplementedInterfaces(
-            proxyData.Options.HasFlag(ImplementationOptions.ProxyBaseClasses),
-            proxyData.Options.HasFlag(ImplementationOptions.ProxyInterfaces)
-        ));
+        _implementedInterfaces.AddRange(
+            classSymbol.Symbol.ResolveImplementedInterfaces(
+                proxyData.Options.HasFlag(ImplementationOptions.ProxyBaseClasses),
+                proxyData.Options.HasFlag(ImplementationOptions.ProxyInterfaces)
+            )
+        );
         if (proxyData.Options.HasFlag(ImplementationOptions.UseExtendedInterfaces))
         {
-            var bases = interfaceSymbol.Symbol.ResolveBaseInterfaces(_implementedInterfaces).ToList();
-            if (bases.Count == 1 && proxyData.Options.HasFlag(ImplementationOptions.ProxyForBaseInterface))
+            var bases = interfaceSymbol
+                .Symbol.ResolveBaseInterfaces(_implementedInterfaces)
+                .ToList();
+            if (
+                bases.Count == 1
+                && proxyData.Options.HasFlag(ImplementationOptions.ProxyForBaseInterface)
+            )
             {
-                proxyData.FullQualifiedMappedTypeName = globalPrefix + bases.Single().GetFullMetadataName();
+                proxyData.FullQualifiedMappedTypeName =
+                    globalPrefix + bases.Single().GetFullMetadataName();
             }
             _implementedInterfaces.AddRange(bases);
             //don't readd self
@@ -102,7 +116,11 @@ internal class PartialInterfacesGenerator : BaseGenerator, IFilesGenerator
         }
 
         _implementedInterfaces = _implementedInterfaces.Distinct().ToList();
-        var isNew = GetExtendsProxyData(classSymbol, proxyData.Options.HasFlag(ImplementationOptions.UseExtendedInterfaces)).Any();
+        var isNew = GetExtendsProxyData(
+                classSymbol,
+                proxyData.Options.HasFlag(ImplementationOptions.UseExtendedInterfaces)
+            )
+            .Any();
 
         var implementedInterfacesNames = _implementedInterfaces
             .Select(i => i.ToFullyQualifiedDisplayString())

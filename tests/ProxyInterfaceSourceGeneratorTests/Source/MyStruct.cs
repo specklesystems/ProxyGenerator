@@ -3,6 +3,7 @@ namespace ProxyInterfaceSourceGeneratorTests.Source;
 public struct MyStruct
 {
     public int Id { get; set; }
+
     public bool TryGetMyStruct2(int i, out MyStruct2 x, double z)
     {
         x = default;
