@@ -121,7 +121,11 @@ class ProxyInterfaceCodeGenerator : ISourceGenerator
             Candidates = receiver.CandidateInterfaces
         };
 
-        var proxyClassesGenerator = new ProxyClassesGenerator(proxyMapItems, context, supportsNullable);
+        var proxyClassesGenerator = new ProxyClassesGenerator(
+            proxyMapItems,
+            context,
+            supportsNullable
+        );
         foreach (var (fileName, text) in proxyClassesGenerator.GenerateFiles())
         {
             context.GeneratorExecutionContext.AddSource(

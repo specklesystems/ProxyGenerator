@@ -35,7 +35,11 @@ public class AkkaTests
             AttributeToAddToInterface = new ExtraAttribute
             {
                 Name = "Speckle.ProxyGenerator.Proxy",
-                ArgumentList = new [] {"typeof(Akka.Actor.LocalActorRefProvider)","ImplementationOptions.ProxyInterfaces"}
+                ArgumentList = new[]
+                {
+                    "typeof(Akka.Actor.LocalActorRefProvider)",
+                    "ImplementationOptions.ProxyInterfaces"
+                }
             }
         };
 

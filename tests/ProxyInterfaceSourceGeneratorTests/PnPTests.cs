@@ -45,7 +45,11 @@ public class PnPTests
             AttributeToAddToInterface = new ExtraAttribute
             {
                 Name = "Speckle.ProxyGenerator.Proxy",
-                ArgumentList = new [] { "typeof(Microsoft.SharePoint.Client.ClientObject)", "ImplementationOptions.UseExtendedInterfaces"}
+                ArgumentList = new[]
+                {
+                    "typeof(Microsoft.SharePoint.Client.ClientObject)",
+                    "ImplementationOptions.UseExtendedInterfaces"
+                }
             }
         };
 
@@ -57,7 +61,11 @@ public class PnPTests
             AttributeToAddToInterface = new ExtraAttribute
             {
                 Name = "Speckle.ProxyGenerator.Proxy",
-                ArgumentList =new [] { "typeof(SecurableObject)" , "ImplementationOptions.UseExtendedInterfaces"}// Only name, no namespace
+                ArgumentList = new[]
+                {
+                    "typeof(SecurableObject)",
+                    "ImplementationOptions.UseExtendedInterfaces"
+                } // Only name, no namespace
             }
         };
 
@@ -69,7 +77,11 @@ public class PnPTests
             AttributeToAddToInterface = new ExtraAttribute
             {
                 Name = "Speckle.ProxyGenerator.Proxy",
-                ArgumentList = new [] { "typeof(Web)", "ImplementationOptions.UseExtendedInterfaces"} // Only name, no namespace
+                ArgumentList = new[]
+                {
+                    "typeof(Web)",
+                    "ImplementationOptions.UseExtendedInterfaces"
+                } // Only name, no namespace
             }
         };
 
@@ -81,7 +93,11 @@ public class PnPTests
             AttributeToAddToInterface = new ExtraAttribute
             {
                 Name = "Speckle.ProxyGenerator.Proxy",
-                ArgumentList = new [] { "typeof(Microsoft.SharePoint.Client.ClientRuntimeContext)", "ImplementationOptions.UseExtendedInterfaces"}
+                ArgumentList = new[]
+                {
+                    "typeof(Microsoft.SharePoint.Client.ClientRuntimeContext)",
+                    "ImplementationOptions.UseExtendedInterfaces"
+                }
             }
         };
 
@@ -93,7 +109,11 @@ public class PnPTests
             AttributeToAddToInterface = new ExtraAttribute
             {
                 Name = "Speckle.ProxyGenerator.Proxy",
-                ArgumentList =new [] {  "typeof(Microsoft.SharePoint.Client.ClientContext)", "ImplementationOptions.UseExtendedInterfaces"} // Only name, no namespace
+                ArgumentList = new[]
+                {
+                    "typeof(Microsoft.SharePoint.Client.ClientContext)",
+                    "ImplementationOptions.UseExtendedInterfaces"
+                } // Only name, no namespace
             }
         };
 

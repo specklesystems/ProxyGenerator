@@ -72,6 +72,9 @@
         <Compile Update="Source\Disposable\IRevitLocationPointProxy.cs">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Compile>
+        <Compile Update="Source\IMyStruct2.cs">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Compile>
     </ItemGroup>
 
     <ItemGroup>

@@ -6,6 +6,7 @@ using ProxyInterfaceSourceGeneratorTests.Source.Disposable;
 using Speckle.ProxyGenerator;
 
 namespace ProxyInterfaceSourceGeneratorTests;
+
 [Flags]
 public enum ImplementationOptions
 {
@@ -19,6 +20,7 @@ public enum ImplementationOptions
 
     ProxyForBaseInterface = 8
 }
+
 public class InheritedInterfaceTests
 {
     private const string Namespace = "ProxyInterfaceSourceGeneratorTests.Source.Disposable";
@@ -36,7 +38,10 @@ public class InheritedInterfaceTests
 
     [Theory]
     [InlineData(ImplementationOptions.None, false)]
-    [InlineData(ImplementationOptions.ProxyBaseClasses | ImplementationOptions.ProxyInterfaces, true)]
+    [InlineData(
+        ImplementationOptions.ProxyBaseClasses | ImplementationOptions.ProxyInterfaces,
+        true
+    )]
     public void GenerateFiles_InheritedInterface_InheritFromBaseClass(
         ImplementationOptions options,
         bool inheritBaseInterface
@@ -49,7 +54,7 @@ public class InheritedInterfaceTests
         // Arrange
         string[] fileNames = [$"{Namespace}.{interfaceName}.g.cs", $"{Namespace}.{proxyName}.g.cs"];
         var path = $"./Source/Disposable/{interfaceName}.cs";
-        SourceFile sourceFile = CreateSourceFile(path, name,options);
+        SourceFile sourceFile = CreateSourceFile(path, name, options);
 
         // Act
         var result = _sut.Execute([sourceFile]);
@@ -82,7 +87,13 @@ public class InheritedInterfaceTests
         string[] fileNames = [$"{Namespace}.{interfaceName}.g.cs", $"{Namespace}.{proxyName}.g.cs"];
 
         var path = $"./Source/Disposable/{interfaceName}.cs";
-        SourceFile sourceFile = CreateSourceFile(path, name, ImplementationOptions.ProxyInterfaces | ImplementationOptions.ProxyBaseClasses | ImplementationOptions.UseExtendedInterfaces);
+        SourceFile sourceFile = CreateSourceFile(
+            path,
+            name,
+            ImplementationOptions.ProxyInterfaces
+                | ImplementationOptions.ProxyBaseClasses
+                | ImplementationOptions.UseExtendedInterfaces
+        );
 
         // Act
         var result = _sut.Execute([sourceFile]);
@@ -111,24 +122,39 @@ public class InheritedInterfaceTests
     {
         var className1 = "LocationPoint";
         var interfaceName1 = "IRevitLocationPointProxy";
-        var proxyName1 =  $"{className1}Proxy";
+        var proxyName1 = $"{className1}Proxy";
 
         // Arrange
         var path1 = $"./Source/Disposable/{interfaceName1}.cs";
 
-        var sourceFile1 = CreateSourceFile(path1, className1, ImplementationOptions.ProxyForBaseInterface | ImplementationOptions.UseExtendedInterfaces);
+        var sourceFile1 = CreateSourceFile(
+            path1,
+            className1,
+            ImplementationOptions.ProxyForBaseInterface
+                | ImplementationOptions.UseExtendedInterfaces
+        );
         var className2 = "Location";
         var interfaceName2 = "IRevitLocationProxy";
-        var proxyName2 =  $"{className2}Proxy";
+        var proxyName2 = $"{className2}Proxy";
 
         // Arrange
         var path2 = $"./Source/Disposable/{interfaceName2}.cs";
-        var sourceFile2 = CreateSourceFile(path2, className2, ImplementationOptions.ProxyForBaseInterface | ImplementationOptions.UseExtendedInterfaces);
+        var sourceFile2 = CreateSourceFile(
+            path2,
+            className2,
+            ImplementationOptions.ProxyForBaseInterface
+                | ImplementationOptions.UseExtendedInterfaces
+        );
 
         // Act
         var result = _sut.Execute([sourceFile1, sourceFile2]);
-        string[] fileNames = [$"{Namespace}.{interfaceName1}.g.cs", $"{Namespace}.{proxyName1}.g.cs",
-            $"{Namespace}.{interfaceName2}.g.cs", $"{Namespace}.{proxyName2}.g.cs"];
+        string[] fileNames =
+        [
+            $"{Namespace}.{interfaceName1}.g.cs",
+            $"{Namespace}.{proxyName1}.g.cs",
+            $"{Namespace}.{interfaceName2}.g.cs",
+            $"{Namespace}.{proxyName2}.g.cs"
+        ];
 
         result.Valid.Should().BeTrue();
         result.Files.Should().HaveCount(fileNames.Length + 1);
@@ -139,6 +165,7 @@ public class InheritedInterfaceTests
             File.WriteAllText($"{OutputPath}{fileName.fileName}", builder.Text);
         }
     }
+
     [Fact]
     public void GenerateFiles_InheritedInterface_Should_Not_InheritExplicitImplementedInterfaces()
     {
@@ -149,7 +176,11 @@ public class InheritedInterfaceTests
         // Arrange
         string[] fileNames = [$"{Namespace}.{interfaceName}.g.cs", $"{Namespace}.{proxyName}.g.cs"];
         var path = $"./Source/Disposable/{interfaceName}.cs";
-        SourceFile sourceFile = CreateSourceFile(path, name, ImplementationOptions.UseExtendedInterfaces);
+        SourceFile sourceFile = CreateSourceFile(
+            path,
+            name,
+            ImplementationOptions.UseExtendedInterfaces
+        );
 
         // Act
         var result = _sut.Execute([sourceFile]);
@@ -173,7 +204,11 @@ public class InheritedInterfaceTests
         Assert.True(noInterfaceImplementationFound);
     }
 
-    private static SourceFile CreateSourceFile(string path, string name,  ImplementationOptions options)
+    private static SourceFile CreateSourceFile(
+        string path,
+        string name,
+        ImplementationOptions options
+    )
     {
         var o = string.Empty;
         foreach (var val in Enum.GetValues<ImplementationOptions>())
@@ -191,7 +226,7 @@ public class InheritedInterfaceTests
         }
         if (o.Length == 0)
         {
-            o  = "ImplementationOptions.None";
+            o = "ImplementationOptions.None";
         }
         return new SourceFile
         {
@@ -216,4 +251,3 @@ public class InheritedInterfaceTests
         }
     }
 }
-

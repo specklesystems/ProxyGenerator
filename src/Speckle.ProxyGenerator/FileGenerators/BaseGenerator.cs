@@ -36,7 +36,9 @@ internal abstract class BaseGenerator
         [NotNullWhen(true)] out ProxyData? proxyData
     )
     {
-        proxyData = Context.Candidates.Values.FirstOrDefault(x => x.FullQualifiedMappedTypeName == type);
+        proxyData = Context.Candidates.Values.FirstOrDefault(x =>
+            x.FullQualifiedMappedTypeName == type
+        );
         if (proxyData is not null)
         {
             return true;
@@ -213,7 +215,7 @@ internal abstract class BaseGenerator
     }
 
     protected bool TryGetNamedTypeSymbolByFullName(
-        TypeKind kind,
+        TypeKind[] kind,
         string name,
         IEnumerable<string> usings,
         [NotNullWhen(true)] out ClassSymbol? classSymbol
@@ -228,7 +230,7 @@ internal abstract class BaseGenerator
         // The GetTypeByMetadataName method returns null if no type matches the full name or if 2 or more types (in different assemblies) match the full name.
         var symbol = Context.GeneratorExecutionContext.Compilation.GetTypeByMetadataName(name);
 
-        if (symbol is not null && symbol.TypeKind == kind)
+        if (symbol is not null && kind.Contains(symbol.TypeKind))
         {
             classSymbol = new ClassSymbol(
                 symbol,
@@ -243,7 +245,7 @@ internal abstract class BaseGenerator
             symbol = Context.GeneratorExecutionContext.Compilation.GetTypeByMetadataName(
                 $"{@using}.{name}"
             );
-            if (symbol is not null && symbol.TypeKind == kind)
+            if (symbol is not null && kind.Contains(symbol.TypeKind))
             {
                 classSymbol = new ClassSymbol(
                     symbol,
@@ -288,7 +290,8 @@ internal abstract class BaseGenerator
     }
 
     protected IReadOnlyList<ProxyData> GetExtendsProxyData(
-        ClassSymbol targetClassSymbol, bool useFullQualifiedMappedTypeName
+        ClassSymbol targetClassSymbol,
+        bool useFullQualifiedMappedTypeName
     )
     {
         var extendsProxyClasses = new List<ProxyData>();

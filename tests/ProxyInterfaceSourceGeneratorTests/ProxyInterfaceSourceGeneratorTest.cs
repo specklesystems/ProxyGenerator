@@ -26,9 +26,17 @@ public class ProxyInterfaceSourceGeneratorTest
     }
 
     [Fact]
-    public void GenerateFiles_ForStruct_Should_Not_GenerateProxyCode()
+    public Task GenerateFiles_ForStruct_Should_GenerateProxyCode()
     {
         // Arrange
+        var fileNames = new[]
+        {
+            "ProxyInterfaceSourceGeneratorTests.Source.IMyStruct.g.cs",
+            "ProxyInterfaceSourceGeneratorTests.Source.MyStructProxy.g.cs",
+            "ProxyInterfaceSourceGeneratorTests.Source.IMyStruct2.g.cs",
+            "ProxyInterfaceSourceGeneratorTests.Source.MyStruct2Proxy.g.cs"
+        };
+
         var path = "./Source/IMyStruct.cs";
         var sourceFile = new SourceFile
         {
@@ -41,12 +49,28 @@ public class ProxyInterfaceSourceGeneratorTest
             }
         };
 
+        var path2 = "./Source/IMyStruct2.cs";
+        var sourceFile2 = new SourceFile
+        {
+            Path = path2,
+            Text = File.ReadAllText(path2),
+            AttributeToAddToInterface = new ExtraAttribute
+            {
+                Name = "Speckle.ProxyGenerator.Proxy",
+                ArgumentList = "typeof(ProxyInterfaceSourceGeneratorTests.Source.MyStruct2)"
+            }
+        };
+
         // Act
-        var result = _sut.Execute(new[] { sourceFile });
+        var result = _sut.Execute(new[] { sourceFile, sourceFile2 });
 
         // Assert
         result.Valid.Should().BeTrue();
-        result.Files.Should().HaveCount(1);
+        result.Files.Should().HaveCount(fileNames.Length + 1);
+
+        // Verify
+        var results = result.GeneratorDriver.GetRunResult().Results.First().GeneratedSources;
+        return Verify(results);
     }
 
     [Fact]
@@ -123,7 +147,6 @@ public class ProxyInterfaceSourceGeneratorTest
         return Verify(results);
     }
 
-
     [Fact]
     public Task GenerateFiles_ForClassWith_BaseInterface()
     {
@@ -145,7 +168,8 @@ public class ProxyInterfaceSourceGeneratorTest
                 ArgumentList = new[]
                 {
                     "typeof(ProxyInterfaceSourceGeneratorTests.Source.Foo2)",
-                    "ImplementationOptions.UseExtendedInterfaces", "ProxyClassAccessibility.Public"
+                    "ImplementationOptions.UseExtendedInterfaces",
+                    "ProxyClassAccessibility.Public"
                 }
             }
         };
@@ -328,7 +352,7 @@ public class ProxyInterfaceSourceGeneratorTest
 
         foreach (var fileName in fileNames.Select((fileName, index) => new { fileName, index }))
         {
-            var builder = result.Files[fileName.index ]; // attribute is last
+            var builder = result.Files[fileName.index]; // attribute is last
             builder.Path.Should().EndWith(fileName.fileName);
 
             if (Write)

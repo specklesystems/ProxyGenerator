@@ -4,5 +4,4 @@ namespace ProxyInterfaceSourceGeneratorTests.Source
     {
         IBar3 Weird();
     }
-
 }

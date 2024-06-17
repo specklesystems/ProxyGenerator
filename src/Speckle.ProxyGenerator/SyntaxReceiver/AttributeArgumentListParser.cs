@@ -94,8 +94,10 @@ internal static class AttributeArgumentListParser
         {
             return false;
         }
-        var splitter = new[] {$"{typeof(TEnum).Name}."};
-        var vals = enumAsString.Split(splitter, StringSplitOptions.RemoveEmptyEntries).Select(x => x.TrimEnd(' ', '|'));
+        var splitter = new[] { $"{typeof(TEnum).Name}." };
+        var vals = enumAsString
+            .Split(splitter, StringSplitOptions.RemoveEmptyEntries)
+            .Select(x => x.TrimEnd(' ', '|'));
 
         long l = 0;
         foreach (var v in vals)
@@ -105,7 +107,8 @@ internal static class AttributeArgumentListParser
                 l |= Convert.ToInt64(e);
             }
         }
-        value = (TEnum)Enum.ToObject(typeof(TEnum), l);;
+        value = (TEnum)Enum.ToObject(typeof(TEnum), l);
+        ;
         return true;
     }
 

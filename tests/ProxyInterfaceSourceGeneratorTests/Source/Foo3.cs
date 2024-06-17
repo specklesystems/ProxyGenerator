@@ -10,6 +10,4 @@ public class Foo3
     }
 }
 
-public class Bar3
-{
-}
+public class Bar3 { }

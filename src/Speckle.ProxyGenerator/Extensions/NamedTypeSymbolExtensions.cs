@@ -110,7 +110,8 @@ internal static class NamedTypeSymbolExtensions
     }
 
     public static IEnumerable<INamedTypeSymbol> ResolveBaseInterfaces(
-        this INamedTypeSymbol symbol, List<INamedTypeSymbol> previousInterfaces
+        this INamedTypeSymbol symbol,
+        List<INamedTypeSymbol> previousInterfaces
     )
     {
         // Direct interfaces, recursive interfaces or base class interfaces should go here.
