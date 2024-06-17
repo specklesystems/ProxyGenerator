@@ -38,7 +38,7 @@ internal class PartialInterfacesGenerator : BaseGenerator, IFilesGenerator
 
         if (
             !TryGetNamedTypeSymbolByFullName(
-                TypeKind.Interface,
+                [TypeKind.Interface],
                 ci.Identifier.ToString(),
                 pd.Usings,
                 out var sourceInterfaceSymbol
@@ -50,7 +50,7 @@ internal class PartialInterfacesGenerator : BaseGenerator, IFilesGenerator
 
         if (
             !TryGetNamedTypeSymbolByFullName(
-                TypeKind.Class,
+                [TypeKind.Class, TypeKind.Struct],
                 pd.FullMetadataTypeName,
                 pd.Usings,
                 out var targetClassSymbol

@@ -108,7 +108,6 @@ namespace Speckle.ProxyGenerator
       }}
 
       private static void Add<T, TInterface, TProxy>(Func<T, TProxy> f)
-        where T : class
         where TInterface : notnull
         where TProxy : TInterface
       {{
