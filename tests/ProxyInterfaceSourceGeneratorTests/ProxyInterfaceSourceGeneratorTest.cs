@@ -73,6 +73,41 @@ public class ProxyInterfaceSourceGeneratorTest
         return Verify(results);
     }
 
+
+    [Fact]
+    public Task GenerateFiles_ForClassWithArray_Should_GenerateCorrectFiles_NotNullable()
+    {
+        // Arrange
+        var fileNames = new[]
+        {
+            "ProxyInterfaceSourceGeneratorTests.Source.IFooNotNullable.g.cs",
+            "ProxyInterfaceSourceGeneratorTests.Source.FooNotNullableProxy.g.cs"
+        };
+
+        var path = "./Source/IFooNotNullable.cs";
+        var sourceFile = new SourceFile
+        {
+            Path = path,
+            Text = File.ReadAllText(path),
+            AttributeToAddToInterface = new ExtraAttribute
+            {
+                Name = "Speckle.ProxyGenerator.Proxy",
+                ArgumentList = "typeof(ProxyInterfaceSourceGeneratorTests.Source.FooNotNullable)"
+            }
+        };
+
+        // Act
+        var result = _sut.Execute(new[] { sourceFile });
+
+        // Assert
+        result.Valid.Should().BeTrue();
+        result.Files.Should().HaveCount(fileNames.Length + 1);
+
+        // Verify
+        var results = result.GeneratorDriver.GetRunResult().Results.First().GeneratedSources;
+        return Verify(results);
+    }
+
     [Fact]
     public Task GenerateFiles_ForClassWithArray_Should_GenerateCorrectFiles()
     {

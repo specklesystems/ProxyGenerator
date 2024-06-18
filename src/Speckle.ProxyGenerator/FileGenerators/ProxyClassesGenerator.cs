@@ -286,7 +286,7 @@ using System;
             }
 
             string returnTypeAsString = GetReplacedTypeAsString(
-                method.ReturnType,
+                method.ReturnType, null,
                 out var returnIsReplaced
             );
 
@@ -306,7 +306,7 @@ using System;
             {
                 var type = FixType(
                     ps.Type.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat),
-                    ps.Type.NullableAnnotation
+                    ps.Type.NullableAnnotation, ps.GetDefaultValue()
                 );
                 string normalOrMap = $" = {ps.GetSanitizedName()}";
                 if (ps.RefKind == RefKind.Out)
@@ -446,7 +446,7 @@ using System;
             var operatorType = @operator.Name.ToLowerInvariant().Replace("op_", string.Empty);
             if (operatorType == "explicit")
             {
-                var returnTypeAsString = GetReplacedTypeAsString(@operator.ReturnType, out _);
+                var returnTypeAsString = GetReplacedTypeAsString(@operator.ReturnType, null, out _);
 
                 str.AppendLine(
                     $"        public static explicit operator {returnTypeAsString}({proxyClassName} {parameter.Name})"
@@ -459,7 +459,7 @@ using System;
             }
             else
             {
-                var returnTypeAsString = GetReplacedTypeAsString(parameter.Type, out _);
+                var returnTypeAsString = GetReplacedTypeAsString(parameter.Type,null, out _);
 
                 str.AppendLine(
                     $"        public static implicit operator {proxyClassName}({returnTypeAsString} {parameter.Name})"

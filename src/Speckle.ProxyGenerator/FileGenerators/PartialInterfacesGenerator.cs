@@ -194,8 +194,8 @@ methods}
             var type = GetPropertyType(property, out var isReplaced);
 
             var getterSetter = isReplaced
-                ? property.ToPropertyDetails(type)
-                : property.ToPropertyDetails();
+                ? ToPropertyDetails(property, type)
+                : ToPropertyDetails(property);
             if (getterSetter is null)
             {
                 continue;
@@ -242,7 +242,7 @@ methods}
             }
 
             str.AppendLine(
-                $"        {GetReplacedTypeAsString(method.ReturnType, out _)} {method.GetMethodNameWithOptionalTypeParameters()}({string.Join(", ", methodParameters)}){whereStatement};"
+                $"        {GetReplacedTypeAsString(method.ReturnType, null, out _)} {method.GetMethodNameWithOptionalTypeParameters()}({string.Join(", ", methodParameters)}){whereStatement};"
             );
             str.AppendLine();
         }
@@ -277,5 +277,32 @@ methods}
         }
 
         return str.ToString();
+    }
+
+
+    public  (string PropertyType, string? PropertyName, string GetSet)? ToPropertyDetails(
+        IPropertySymbol property,
+        string? overrideType = null
+    )
+    {
+        var getIsPublic = property.GetMethod.IsPublic();
+        var setIsPublic = property.SetMethod.IsPublic();
+
+        if (!getIsPublic && !setIsPublic)
+        {
+            return null;
+        }
+
+        var get = getIsPublic ? "get; " : string.Empty;
+        var set = setIsPublic ? "set; " : string.Empty;
+
+        var type = !string.IsNullOrEmpty(overrideType)
+            ? overrideType
+            : FixType(
+                property.Type.ToFullyQualifiedDisplayString(),
+                property.NullableAnnotation, null
+            );
+
+        return (type!, property.GetSanitizedName(), $"{{ {get}{set}}}");
     }
 }

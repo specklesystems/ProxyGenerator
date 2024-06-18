@@ -23,12 +23,12 @@ internal abstract class BaseGenerator
 
     protected string GetPropertyType(IPropertySymbol property, out bool isReplaced)
     {
-        return GetReplacedTypeAsString(property.Type, out isReplaced);
+        return GetReplacedTypeAsString(property.Type, null, out isReplaced);
     }
 
     protected string GetParameterType(IParameterSymbol property, out bool isReplaced)
     {
-        return GetReplacedTypeAsString(property.Type, out isReplaced);
+        return GetReplacedTypeAsString(property.Type, property.GetDefaultValue(), out isReplaced);
     }
 
     protected bool TryFindProxyDataByTypeName(
@@ -119,7 +119,7 @@ internal abstract class BaseGenerator
         {
             if (replaceIt)
             {
-                constraints.Add(GetReplacedTypeAsString(namedTypeSymbol, out _));
+                constraints.Add(GetReplacedTypeAsString(namedTypeSymbol, null, out _));
             }
             else
             {
@@ -152,7 +152,7 @@ internal abstract class BaseGenerator
             | SymbolDisplayMiscellaneousOptions.IncludeNullableReferenceTypeModifier
     );
 
-    protected string GetReplacedTypeAsString(ITypeSymbol typeSymbol, out bool isReplaced)
+    protected string GetReplacedTypeAsString(ITypeSymbol typeSymbol, string? defaultValue, out bool isReplaced)
     {
         isReplaced = false;
 
@@ -170,7 +170,7 @@ internal abstract class BaseGenerator
             }
 
             isReplaced = true;
-            return FixType(existing.FullInterfaceName, typeSymbol.NullableAnnotation);
+            return FixType(existing.FullInterfaceName, typeSymbol.NullableAnnotation, defaultValue);
         }
 
         ITypeSymbol[] typeArguments;
@@ -184,7 +184,7 @@ internal abstract class BaseGenerator
         }
         else
         {
-            return FixType(typeSymbolAsString, typeSymbol.NullableAnnotation);
+            return FixType(typeSymbolAsString, typeSymbol.NullableAnnotation, defaultValue);
         }
 
         var propertyTypeAsStringToBeModified = nullableTypeSymbolAsString;
@@ -211,7 +211,7 @@ internal abstract class BaseGenerator
             }
         }
 
-        return FixType(propertyTypeAsStringToBeModified, typeSymbol.NullableAnnotation);
+        return FixType(propertyTypeAsStringToBeModified, typeSymbol.NullableAnnotation, defaultValue);
     }
 
     protected bool TryGetNamedTypeSymbolByFullName(
@@ -276,9 +276,10 @@ internal abstract class BaseGenerator
                 }
                 else
                 {
+
                     type = FixType(
                         parameterSymbol.Type.ToFullyQualifiedDisplayString(),
-                        parameterSymbol.NullableAnnotation
+                        parameterSymbol.NullableAnnotation, parameterSymbol.GetDefaultValue()
                     );
                 }
             }
@@ -316,10 +317,16 @@ internal abstract class BaseGenerator
         return extendsProxyClasses;
     }
 
-    internal static string FixType(string type, NullableAnnotation nullableAnnotation)
+    internal  string FixType(string type, NullableAnnotation nullableAnnotation, string? defaultValue)
     {
+        var na = nullableAnnotation;
+        if (SupportsNullable && defaultValue ==
+            $" = null")
+        {
+            na = NullableAnnotation.Annotated;
+        }
         if (
-            nullableAnnotation == NullableAnnotation.Annotated
+            na == NullableAnnotation.Annotated
             && !type.EndsWith("?", StringComparison.Ordinal)
         )
         {
