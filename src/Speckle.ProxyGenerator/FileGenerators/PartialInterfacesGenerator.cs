@@ -191,7 +191,7 @@ methods}
             )
         )
         {
-            var type = GetPropertyType(property, out var isReplaced);
+            var (_, type) = GetPropertyType(property, out var isReplaced);
 
             var getterSetter = isReplaced
                 ? ToPropertyDetails(property, type)
@@ -233,6 +233,10 @@ methods}
             )
         )
         {
+            if (method.IsStatic)
+            {
+                continue;
+            }
             var methodParameters = GetMethodParameters(method.Parameters, true);
             var whereStatement = GetWhereStatementFromMethod(method);
 
@@ -241,8 +245,9 @@ methods}
                 str.AppendLine($"        {attribute}");
             }
 
+            var (_, type) = GetReplacedTypeAsString(method.ReturnType, null, out _);
             str.AppendLine(
-                $"        {GetReplacedTypeAsString(method.ReturnType, null, out _)} {method.GetMethodNameWithOptionalTypeParameters()}({string.Join(", ", methodParameters)}){whereStatement};"
+                $"        {type} {method.GetMethodNameWithOptionalTypeParameters()}({string.Join(", ", methodParameters)}){whereStatement};"
             );
             str.AppendLine();
         }
@@ -262,10 +267,16 @@ methods}
         )
         {
             var ps = @event.First().Parameters.First();
-            var type =
-                ps.GetTypeEnum() == TypeEnum.Complex
-                    ? GetParameterType(ps, out _)
-                    : ps.Type.ToString();
+
+            string? type;
+            if (ps.GetTypeEnum() == TypeEnum.Complex)
+            {
+                (_, type) = GetParameterType(ps, out _);
+            }
+            else
+            {
+                type = ps.Type.ToString();
+            }
 
             foreach (var attribute in ps.GetAttributesAsList())
             {
@@ -296,12 +307,18 @@ methods}
         var get = getIsPublic ? "get; " : string.Empty;
         var set = setIsPublic ? "set; " : string.Empty;
 
-        var type = !string.IsNullOrEmpty(overrideType)
-            ? overrideType
-            : FixType(
+        string? type;
+        if (!string.IsNullOrEmpty(overrideType))
+        {
+            type = overrideType;
+        }
+        else
+        {
+            (_, type) = FixType(
                 property.Type.ToFullyQualifiedDisplayString(),
                 property.NullableAnnotation, null
             );
+        }
 
         return (type!, property.GetSanitizedName(), $"{{ {get}{set}}}");
     }

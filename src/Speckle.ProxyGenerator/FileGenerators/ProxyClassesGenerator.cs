@@ -182,7 +182,7 @@ using System;
 
         foreach (var property in MemberHelper.GetPublicProperties(targetClassSymbol, proxyData))
         {
-            var type = GetPropertyType(property, out var isReplaced);
+            var (_, type) = GetPropertyType(property, out var isReplaced);
 
             var instance = !property.IsStatic ? "_Instance" : $"{targetClassSymbol.Symbol}";
 
@@ -261,7 +261,7 @@ using System;
 
             foreach (var parameterSymbol in method.Parameters)
             {
-                var type = GetParameterType(parameterSymbol, out _);
+                var (_, type) = GetParameterType(parameterSymbol, out _);
 
                 methodParameters.Add(MethodParameterBuilder.Build(parameterSymbol, type));
 
@@ -285,7 +285,7 @@ using System;
                 overrideOrVirtual = "virtual ";
             }
 
-            string returnTypeAsString = GetReplacedTypeAsString(
+            var (_, returnTypeAsString) = GetReplacedTypeAsString(
                 method.ReturnType, null,
                 out var returnIsReplaced
             );
@@ -304,7 +304,7 @@ using System;
 
             foreach (var ps in method.Parameters.Where(p => !p.IsRef()))
             {
-                var type = FixType(
+                var (wasFixed, type) = FixType(
                     ps.Type.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat),
                     ps.Type.NullableAnnotation, ps.GetDefaultValue()
                 );
@@ -318,8 +318,16 @@ using System;
                     _ = GetParameterType(ps, out var isReplaced); // TODO : response is not used?
                     if (isReplaced)
                     {
-                        normalOrMap =
-                            $" = Mapster.TypeAdapter.Adapt<{type}>({ps.GetSanitizedName()})";
+                        if (wasFixed)
+                        {
+                            normalOrMap =
+                                $" = Speckle.ProxyGenerator.MapsterAdapter.AdaptNull<{type}>({ps.GetSanitizedName()})";
+                        }
+                        else
+                        {
+                            normalOrMap =   $" = Mapster.TypeAdapter.Adapt<{type}>({ps.GetSanitizedName()})";
+
+                        }
                     }
                 }
 
@@ -350,7 +358,7 @@ using System;
             foreach (var ps in method.Parameters.Where(p => p.RefKind == RefKind.Out))
             {
                 string normalOrMap = $" = {ps.GetSanitizedName()}_";
-                var type = GetParameterType(ps, out var isReplaced);
+                var (_, type) = GetParameterType(ps, out var isReplaced);
                 if (isReplaced)
                 {
                     normalOrMap = $" = Mapster.TypeAdapter.Adapt<{type}>({ps.GetSanitizedName()}_)";
@@ -391,10 +399,15 @@ using System;
             }
             var name = @event.Key.GetSanitizedName();
             var ps = @event.First().Parameters.First();
-            var type =
-                ps.GetTypeEnum() == TypeEnum.Complex
-                    ? GetParameterType(ps, out _)
-                    : ps.Type.ToString();
+            var type = string.Empty;
+            if (ps.GetTypeEnum() == TypeEnum.Complex)
+            {
+                (_, type) = GetParameterType(ps, out _);
+            }
+            else
+            {
+                type = ps.Type.ToString();
+            }
 
             foreach (var attribute in ps.GetAttributesAsList())
             {
@@ -446,7 +459,7 @@ using System;
             var operatorType = @operator.Name.ToLowerInvariant().Replace("op_", string.Empty);
             if (operatorType == "explicit")
             {
-                var returnTypeAsString = GetReplacedTypeAsString(@operator.ReturnType, null, out _);
+                var (_, returnTypeAsString) = GetReplacedTypeAsString(@operator.ReturnType, null, out _);
 
                 str.AppendLine(
                     $"        public static explicit operator {returnTypeAsString}({proxyClassName} {parameter.Name})"
@@ -459,7 +472,7 @@ using System;
             }
             else
             {
-                var returnTypeAsString = GetReplacedTypeAsString(parameter.Type,null, out _);
+                var (_, returnTypeAsString) = GetReplacedTypeAsString(parameter.Type,null, out _);
 
                 str.AppendLine(
                     $"        public static implicit operator {proxyClassName}({returnTypeAsString} {parameter.Name})"

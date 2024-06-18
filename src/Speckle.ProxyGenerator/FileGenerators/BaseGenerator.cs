@@ -21,12 +21,12 @@ internal abstract class BaseGenerator
         SupportsNullable = supportsNullable;
     }
 
-    protected string GetPropertyType(IPropertySymbol property, out bool isReplaced)
+    protected FixedType GetPropertyType(IPropertySymbol property, out bool isReplaced)
     {
         return GetReplacedTypeAsString(property.Type, null, out isReplaced);
     }
 
-    protected string GetParameterType(IParameterSymbol property, out bool isReplaced)
+    protected FixedType GetParameterType(IParameterSymbol property, out bool isReplaced)
     {
         return GetReplacedTypeAsString(property.Type, property.GetDefaultValue(), out isReplaced);
     }
@@ -119,7 +119,8 @@ internal abstract class BaseGenerator
         {
             if (replaceIt)
             {
-                constraints.Add(GetReplacedTypeAsString(namedTypeSymbol, null, out _));
+                var (_, type) = GetReplacedTypeAsString(namedTypeSymbol, null, out _);
+                constraints.Add(type);
             }
             else
             {
@@ -152,7 +153,7 @@ internal abstract class BaseGenerator
             | SymbolDisplayMiscellaneousOptions.IncludeNullableReferenceTypeModifier
     );
 
-    protected string GetReplacedTypeAsString(ITypeSymbol typeSymbol, string? defaultValue, out bool isReplaced)
+    protected FixedType GetReplacedTypeAsString(ITypeSymbol typeSymbol, string? defaultValue, out bool isReplaced)
     {
         isReplaced = false;
 
@@ -272,12 +273,12 @@ internal abstract class BaseGenerator
             {
                 if (parameterSymbol.GetTypeEnum() == TypeEnum.Complex)
                 {
-                    type = GetParameterType(parameterSymbol, out _);
+                   (_,  type) = GetParameterType(parameterSymbol, out _);
                 }
                 else
                 {
 
-                    type = FixType(
+                    (_, type) = FixType(
                         parameterSymbol.Type.ToFullyQualifiedDisplayString(),
                         parameterSymbol.NullableAnnotation, parameterSymbol.GetDefaultValue()
                     );
@@ -317,7 +318,7 @@ internal abstract class BaseGenerator
         return extendsProxyClasses;
     }
 
-    internal  string FixType(string type, NullableAnnotation nullableAnnotation, string? defaultValue)
+    internal FixedType FixType(string type, NullableAnnotation nullableAnnotation, string? defaultValue)
     {
         var na = nullableAnnotation;
         if (SupportsNullable && defaultValue ==
@@ -330,8 +331,10 @@ internal abstract class BaseGenerator
             && !type.EndsWith("?", StringComparison.Ordinal)
         )
         {
-            return $"{type}?";
+            return new (true, $"{type}?");
         }
-        return type;
+        return new (false, type);
     }
 }
+
+internal record FixedType(bool Fixed, string Type);
