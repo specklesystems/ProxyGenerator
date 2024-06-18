@@ -286,7 +286,8 @@ using System;
             }
 
             var (_, returnTypeAsString) = GetReplacedTypeAsString(
-                method.ReturnType, null,
+                method.ReturnType,
+                null,
                 out var returnIsReplaced
             );
 
@@ -306,7 +307,8 @@ using System;
             {
                 var (wasFixed, type) = FixType(
                     ps.Type.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat),
-                    ps.Type.NullableAnnotation, ps.GetDefaultValue()
+                    ps.Type.NullableAnnotation,
+                    ps.GetDefaultValue()
                 );
                 string normalOrMap = $" = {ps.GetSanitizedName()}";
                 if (ps.RefKind == RefKind.Out)
@@ -325,8 +327,8 @@ using System;
                         }
                         else
                         {
-                            normalOrMap =   $" = Mapster.TypeAdapter.Adapt<{type}>({ps.GetSanitizedName()})";
-
+                            normalOrMap =
+                                $" = Mapster.TypeAdapter.Adapt<{type}>({ps.GetSanitizedName()})";
                         }
                     }
                 }
@@ -459,7 +461,11 @@ using System;
             var operatorType = @operator.Name.ToLowerInvariant().Replace("op_", string.Empty);
             if (operatorType == "explicit")
             {
-                var (_, returnTypeAsString) = GetReplacedTypeAsString(@operator.ReturnType, null, out _);
+                var (_, returnTypeAsString) = GetReplacedTypeAsString(
+                    @operator.ReturnType,
+                    null,
+                    out _
+                );
 
                 str.AppendLine(
                     $"        public static explicit operator {returnTypeAsString}({proxyClassName} {parameter.Name})"
@@ -472,7 +478,7 @@ using System;
             }
             else
             {
-                var (_, returnTypeAsString) = GetReplacedTypeAsString(parameter.Type,null, out _);
+                var (_, returnTypeAsString) = GetReplacedTypeAsString(parameter.Type, null, out _);
 
                 str.AppendLine(
                     $"        public static implicit operator {proxyClassName}({returnTypeAsString} {parameter.Name})"

@@ -73,7 +73,6 @@ public class ProxyInterfaceSourceGeneratorTest
         return Verify(results);
     }
 
-
     [Fact]
     public Task GenerateFiles_ForClassWithArray_Should_GenerateCorrectFiles_NotNullable()
     {

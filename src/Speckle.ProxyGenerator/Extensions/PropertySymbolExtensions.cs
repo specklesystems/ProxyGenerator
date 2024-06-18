@@ -7,5 +7,4 @@ namespace Speckle.ProxyGenerator.Extensions;
 internal static class PropertySymbolExtensions
 {
     public static TypeEnum GetTypeEnum(this IPropertySymbol p) => p.Type.GetTypeEnum();
-
 }

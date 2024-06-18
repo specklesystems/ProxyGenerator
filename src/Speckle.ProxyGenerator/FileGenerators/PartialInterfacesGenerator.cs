@@ -286,8 +286,7 @@ methods}
         return str.ToString();
     }
 
-
-    public  (string PropertyType, string? PropertyName, string GetSet)? ToPropertyDetails(
+    public (string PropertyType, string? PropertyName, string GetSet)? ToPropertyDetails(
         IPropertySymbol property,
         string? overrideType = null
     )
@@ -312,7 +311,8 @@ methods}
         {
             (_, type) = FixType(
                 property.Type.ToFullyQualifiedDisplayString(),
-                property.NullableAnnotation, null
+                property.NullableAnnotation,
+                null
             );
         }
 
