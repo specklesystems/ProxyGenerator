@@ -233,10 +233,6 @@ methods}
             )
         )
         {
-            if (method.IsStatic)
-            {
-                continue;
-            }
             var methodParameters = GetMethodParameters(method.Parameters, true);
             var whereStatement = GetWhereStatementFromMethod(method);
 
