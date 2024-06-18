@@ -321,7 +321,7 @@ internal abstract class BaseGenerator
     {
         var na = nullableAnnotation;
         if (SupportsNullable && defaultValue ==
-            $" = null")
+            " = null")
         {
             na = NullableAnnotation.Annotated;
         }

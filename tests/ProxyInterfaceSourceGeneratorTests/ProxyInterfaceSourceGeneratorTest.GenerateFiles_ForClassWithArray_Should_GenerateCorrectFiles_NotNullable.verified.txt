@@ -20,7 +20,7 @@ namespace ProxyInterfaceSourceGeneratorTests.Source
     {
         global::ProxyInterfaceSourceGeneratorTests.Source.FooNotNullable _Instance { get; }
 
-        void Test(global::System.Collections.Generic.IEnumerable<string>? v = null);
+        void Test(global::ProxyInterfaceSourceGeneratorTests.Source.FooEnum z = 1, global::System.Collections.Generic.IEnumerable<string>? v = null);
     }
 }
 #nullable restore
@@ -46,10 +46,11 @@ namespace ProxyInterfaceSourceGeneratorTests.Source
     {
         public global::ProxyInterfaceSourceGeneratorTests.Source.FooNotNullable _Instance { get; }
         
-        public void Test(global::System.Collections.Generic.IEnumerable<string>? v = null)
+        public void Test(global::ProxyInterfaceSourceGeneratorTests.Source.FooEnum z = 1, global::System.Collections.Generic.IEnumerable<string>? v = null)
         {
+            global::ProxyInterfaceSourceGeneratorTests.Source.FooEnum z_ = z;
             global::System.Collections.Generic.IEnumerable<string>? v_ = v;
-            _Instance.Test(v_);
+            _Instance.Test(z_, v_);
         }
 
 
