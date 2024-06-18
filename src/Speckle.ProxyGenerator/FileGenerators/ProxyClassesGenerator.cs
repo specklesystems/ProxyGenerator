@@ -385,6 +385,10 @@ using System;
         var str = new StringBuilder();
         foreach (var @event in MemberHelper.GetPublicEvents(targetClassSymbol, proxyData))
         {
+            if (@event.Key.IsStatic)
+            {
+                continue;
+            }
             var name = @event.Key.GetSanitizedName();
             var ps = @event.First().Parameters.First();
             var type =
@@ -417,6 +421,10 @@ using System;
 
     private string GenerateOperators(ClassSymbol targetClassSymbol, ProxyData proxyData)
     {
+        if (targetClassSymbol.Symbol.TypeKind != TypeKind.Class)
+        {
+            return string.Empty;
+        }
         var str = new StringBuilder();
         foreach (
             var @operator in MemberHelper.GetPublicStaticOperators(targetClassSymbol, proxyData)
