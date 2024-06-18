@@ -207,6 +207,18 @@ namespace Speckle.ProxyGenerator
       public static object CreateProxy(Type type, object toWrap) => s_proxyFactory[type](toWrap);
       public static T CreateProxy<T>(object toWrap) => (T)CreateProxy(typeof(T), toWrap);
     }
+    public static class MapsterAdapter
+    {
+        public static TDestination? AdaptNull<TDestination>(object? source)
+        {
+            if (source is null)
+            {
+                return default;
+            }
+
+            return Mapster.TypeAdapter.Adapt<TDestination>(source);
+        }
+    }
 #nullable restore
 }
   }
