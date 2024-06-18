@@ -21,14 +21,14 @@ internal abstract class BaseGenerator
         SupportsNullable = supportsNullable;
     }
 
-    protected string GetPropertyType(IPropertySymbol property, out bool isReplaced)
+    protected FixedType GetPropertyType(IPropertySymbol property, out bool isReplaced)
     {
-        return GetReplacedTypeAsString(property.Type, out isReplaced);
+        return GetReplacedTypeAsString(property.Type, null, out isReplaced);
     }
 
-    protected string GetParameterType(IParameterSymbol property, out bool isReplaced)
+    protected FixedType GetParameterType(IParameterSymbol property, out bool isReplaced)
     {
-        return GetReplacedTypeAsString(property.Type, out isReplaced);
+        return GetReplacedTypeAsString(property.Type, property.GetDefaultValue(), out isReplaced);
     }
 
     protected bool TryFindProxyDataByTypeName(
@@ -119,7 +119,8 @@ internal abstract class BaseGenerator
         {
             if (replaceIt)
             {
-                constraints.Add(GetReplacedTypeAsString(namedTypeSymbol, out _));
+                var (_, type) = GetReplacedTypeAsString(namedTypeSymbol, null, out _);
+                constraints.Add(type);
             }
             else
             {
@@ -152,7 +153,11 @@ internal abstract class BaseGenerator
             | SymbolDisplayMiscellaneousOptions.IncludeNullableReferenceTypeModifier
     );
 
-    protected string GetReplacedTypeAsString(ITypeSymbol typeSymbol, out bool isReplaced)
+    protected FixedType GetReplacedTypeAsString(
+        ITypeSymbol typeSymbol,
+        string? defaultValue,
+        out bool isReplaced
+    )
     {
         isReplaced = false;
 
@@ -170,7 +175,7 @@ internal abstract class BaseGenerator
             }
 
             isReplaced = true;
-            return FixType(existing.FullInterfaceName, typeSymbol.NullableAnnotation);
+            return FixType(existing.FullInterfaceName, typeSymbol.NullableAnnotation, defaultValue);
         }
 
         ITypeSymbol[] typeArguments;
@@ -184,7 +189,7 @@ internal abstract class BaseGenerator
         }
         else
         {
-            return FixType(typeSymbolAsString, typeSymbol.NullableAnnotation);
+            return FixType(typeSymbolAsString, typeSymbol.NullableAnnotation, defaultValue);
         }
 
         var propertyTypeAsStringToBeModified = nullableTypeSymbolAsString;
@@ -211,7 +216,11 @@ internal abstract class BaseGenerator
             }
         }
 
-        return FixType(propertyTypeAsStringToBeModified, typeSymbol.NullableAnnotation);
+        return FixType(
+            propertyTypeAsStringToBeModified,
+            typeSymbol.NullableAnnotation,
+            defaultValue
+        );
     }
 
     protected bool TryGetNamedTypeSymbolByFullName(
@@ -272,13 +281,14 @@ internal abstract class BaseGenerator
             {
                 if (parameterSymbol.GetTypeEnum() == TypeEnum.Complex)
                 {
-                    type = GetParameterType(parameterSymbol, out _);
+                    (_, type) = GetParameterType(parameterSymbol, out _);
                 }
                 else
                 {
-                    type = FixType(
+                    (_, type) = FixType(
                         parameterSymbol.Type.ToFullyQualifiedDisplayString(),
-                        parameterSymbol.NullableAnnotation
+                        parameterSymbol.NullableAnnotation,
+                        parameterSymbol.GetDefaultValue()
                     );
                 }
             }
@@ -316,15 +326,23 @@ internal abstract class BaseGenerator
         return extendsProxyClasses;
     }
 
-    internal static string FixType(string type, NullableAnnotation nullableAnnotation)
+    internal FixedType FixType(
+        string type,
+        NullableAnnotation nullableAnnotation,
+        string? defaultValue
+    )
     {
-        if (
-            nullableAnnotation == NullableAnnotation.Annotated
-            && !type.EndsWith("?", StringComparison.Ordinal)
-        )
+        var na = nullableAnnotation;
+        if (SupportsNullable && defaultValue == " = null")
         {
-            return $"{type}?";
+            na = NullableAnnotation.Annotated;
         }
-        return type;
+        if (na == NullableAnnotation.Annotated && !type.EndsWith("?", StringComparison.Ordinal))
+        {
+            return new(true, $"{type}?");
+        }
+        return new(false, type);
     }
 }
+
+internal record FixedType(bool Fixed, string Type);
