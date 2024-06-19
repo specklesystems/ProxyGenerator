@@ -3,6 +3,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Speckle.ProxyGenerator.Extensions;
 using Speckle.ProxyGenerator.Models;
+using Speckle.ProxyGenerator.Types;
 
 namespace Speckle.ProxyGenerator.SyntaxReceiver;
 
@@ -99,7 +100,7 @@ internal class ProxySyntaxReceiver : ISyntaxContextReceiver
             fullMetadataTypeName: metadataName,
             shortMetadataTypeName: metadataName.Split('.').Last(),
             usings: usings,
-            options: fluentBuilderAttributeArguments.Options,
+            options: fluentBuilderAttributeArguments.Options ??  ImplementationOptions.UseExtendedInterfaces | ImplementationOptions.ProxyForBaseInterface,
             accessibility: fluentBuilderAttributeArguments.Accessibility,
             membersToIgnore: fluentBuilderAttributeArguments.MembersToIgnore
         );
