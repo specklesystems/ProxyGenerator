@@ -14,6 +14,7 @@ Api Assembly:
 
 - Proxy Interfaces that inherit from the base interfaces
 - Proxy attribute references wrapped Api
+- If `ImplementationOptions` is omitted then defaults are used: `ImplementationOptions.UseExtendedInterfaces | ImplementationOptions.ProxyForBaseInterface`
 
 New needs: base interface is used by wrappers.  Need to ignore members from wrapped api on demand.
 

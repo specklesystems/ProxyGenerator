@@ -29,9 +29,6 @@
         <Compile Update="Interfaces\IClientObject.cs">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Compile>
-        <Compile Update="Interfaces\IListCollection.cs">
-          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </Compile>
         <Compile Update="Interfaces\IUser.cs">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Compile>

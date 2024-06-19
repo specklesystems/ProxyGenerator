@@ -5,7 +5,7 @@ internal record ProxyInterfaceGeneratorAttributeArguments(
     string MetadataName
 )
 {
-    public ImplementationOptions Options { get; set; }
+    public ImplementationOptions? Options { get; set; }
 
     public ProxyClassAccessibility Accessibility { get; set; }
     public string[] MembersToIgnore { get; set; } = [];
